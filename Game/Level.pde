@@ -3,6 +3,7 @@ class Level {
   private int gridSize = 50;
   private String type;
   private int w = width / gridSize, h = height / gridSize;
+  private ArrayList<int[]> path = new ArrayList<int[]>();
   
   public Level(int pb, String t) {
     pathBlocks = pb;
@@ -11,9 +12,8 @@ class Level {
   
   public void draw() {
     int[] start = {0, gridSize};
-    int[][] directions = {{-gridSize, 0}, {gridSize, 0}, {0, -gridSize}, {0, gridSize}};
+    int[][] directions = {{-gridSize * 2, 0}, {gridSize * 2, 0}, {0, -gridSize * 2}, {0, gridSize * 2}};
     int[] last = start;
-    ArrayList<int[]> path = new ArrayList<int[]>();
     
     for (int i = 0; i < pathBlocks; i++) {
       for (int[] direction : directions) {
