@@ -4,11 +4,12 @@ float damage, rate, cost, range;
 String type;
 PVector location;
 
-Tower(){
-damage = 0;
-rate = 0;
-cost = 0;
-range = 0;
+Tower(float damage, float rate, float cost, float range, PVector location){
+this.damage = damage;
+this.rate = rate;
+this.cost = cost;
+this.range = range;
+this.location = location;
 }
 
 
@@ -28,10 +29,13 @@ float getRange(){
 return range;
 }
 
-
+PVector getLocation(){
+return location;
+}
 
 
 void shoot(){
+
 }
 
 }
