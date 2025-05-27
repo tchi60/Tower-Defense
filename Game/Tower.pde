@@ -34,8 +34,17 @@ return location;
 }
 
 
-void shoot(){
+void shoot(Array list){
+  for (Enemy enemy:list){
+    if (withinRange(enemy) <= range){
+      enemy.damage(this);
+    }
+  }
+}
 
+float withinRange(Enemy enemy){
+  return sqrt((Math.pow(location.x - enemy.x),2) + Math.pow((location.y-enemy.y),2));
+   
 }
 
 }
