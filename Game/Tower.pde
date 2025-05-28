@@ -43,8 +43,8 @@ void shoot(Enemy[] list){
 }
 
 float withinRange(Enemy enemy){
-    float x = location.x - enemy.x;
-    float y = location.y - enemy.y;
+    float x = location.x - enemy.getX();
+    float y = location.y - enemy.getY();
     return x*x + y*y;
 }
 
