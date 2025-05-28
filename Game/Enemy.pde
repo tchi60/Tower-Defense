@@ -39,4 +39,7 @@ public class Enemy{
     }
   }
 }
+<<<<<<< HEAD
   
+=======
+>>>>>>> b606c93e8e096ea1f19310ab678b3f50a4ff5a88
