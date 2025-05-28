@@ -55,7 +55,7 @@ void addEnemy(){
 
 void updateEnemy(){
   for (int i = 0; i < enemies.size(); i++){
-    enemies.get(i).getX();
+    
   }
 }
   

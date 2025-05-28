@@ -28,6 +28,7 @@ public class Enemy{
   public float getY(){
     return position.y;
   }
+  public int getPathBlock(PVector[] 
   public void damage(Tower myTower){
     health -= myTower.getDamage() * defense;
     if (health <= 0){
