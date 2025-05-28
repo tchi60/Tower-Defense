@@ -43,12 +43,7 @@ void shoot(Enemy[] list){
 }
 
 float withinRange(Enemy enemy){
-<<<<<<< HEAD
   return sqrt(pow((location.x-enemy.x), 2) + pow((location.y-enemy.y),2));
-=======
- return sqrt(pow((location.x-enemy.x), 2) + pow((location.y-enemy.y),2));
->>>>>>> schi60
-   
 }
 
 }
