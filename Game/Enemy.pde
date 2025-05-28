@@ -38,4 +38,4 @@ public class Enemy{
       isAlive = false;
     }
   }
-  
+}
