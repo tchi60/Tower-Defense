@@ -34,7 +34,7 @@ return location;
 }
 
 
-void shoot(Array list){
+void shoot(Enemy[] list){
   for (Enemy enemy:list){
     if (withinRange(enemy) <= range){
       enemy.damage(this);
@@ -43,7 +43,11 @@ void shoot(Array list){
 }
 
 float withinRange(Enemy enemy){
+<<<<<<< HEAD
   return sqrt(pow((location.x-enemy.x), 2) + pow((location.y-enemy.y),2));
+=======
+ return sqrt(pow((location.x-enemy.x), 2) + pow((location.y-enemy.y),2));
+>>>>>>> schi60
    
 }
 
