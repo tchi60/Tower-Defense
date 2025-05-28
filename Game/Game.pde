@@ -8,11 +8,13 @@ class Game{
   ArrayList<String> levelTypes;
   Level level;
   float enemySpeed;
+  int levelType;
+  PVector enemyStart;
   
   setup(){
     numPaths = 10;
-    int indLevelType = (int)(Math.random() * levelTypes.size());
-    level = new Level(numPaths, levelTypes.get(indLevelType));
+    levelType = (int)(Math.random() * levelTypes.size());
+    level = new Level(numPaths, levelTypes.get(levelType));
     baseHealth = 100;
     towers = new ArrayList<Tower>();
     enemies = new ArrayList<Enemy>();
@@ -26,8 +28,15 @@ class Game{
     if (frameCount % spawnRate == 0){
       addEnemy();
     }
+    if (frameCount % enemySpeed == 0){
+      updateEnemy();
+    }
   }
   
   addEnemy(){
-    Enemy newEnemy = new Enemy(100, 0.9, 
-    
+    Enemy newEnemy = new Enemy(100, 0.9, levelTypes.get(levelType), enemyStart);
+  }
+  
+  updateEnemy(){
+    for (int i = 0; i < enemies.size(); i++){
+      
