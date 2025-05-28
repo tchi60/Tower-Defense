@@ -1,8 +1,24 @@
+int numLevel;
+float spawnRate;
+ArrayList<Enemy> enemies;
+ArrayList<Tower> towers;
+int numPaths;
+int baseHealth;
+String[] levelTypes = {"a", "b", "c", "d", "e", "f"};
+float enemySpeed;
+int levelType;
+PVector enemyStart;
 Level level;
 
 void setup() {
   size(800, 600);
-  level = new Level(50, "test");
+  numPaths = 50;
+  levelType = (int)(Math.random() * levelTypes.length);
+  level = new Level(numPaths, levelTypes[levelType]);
+  baseHealth = 100;
+  towers = new ArrayList<Tower>();
+  enemies = new ArrayList<Enemy>();
+  spawnRate = 10;
   level.setup();
 }
 
@@ -24,4 +40,22 @@ void draw() {
   }
 
   level.draw();
+  if (frameCount % spawnRate == 0){
+    addEnemy();
+  }
+  if (frameCount % enemySpeed == 0){
+    updateEnemy();
+  }
 }
+
+void addEnemy(){
+  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
+  enemies.add(newEnemy);
+}
+
+void updateEnemy(){
+  for (int i = 0; i < enemies.size(); i++){
+    enemies.get(i).getX();
+  }
+}
+  

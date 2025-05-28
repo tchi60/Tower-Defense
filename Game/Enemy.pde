@@ -1,22 +1,18 @@
 public class Enemy{
-  private float speed;
   private float health;
   private float defense;
   private String type;
   private PVector position;
   public boolean isAlive;
   
-  public Enemy(float mySpeed, float myHealth, float myDefense, String myType, PVector myPosition){
-    speed = mySpeed;
+  public Enemy(float myHealth, float myDefense, String myType, PVector myPosition){
     health = myHealth;
     defense = myDefense;
     type = myType;
     position = myPosition;
     isAlive = true;
   }
-  public float getSpeed(){
-    return speed;
-  }
+
   public float getHealth(){
     return health;
   }
@@ -38,4 +34,4 @@ public class Enemy{
       isAlive = false;
     }
   }
-  
+}

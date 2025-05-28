@@ -1,4 +1,4 @@
-class Level {
+class Level{
   private int pathBlocks;
   private int gridSize = 50;
   private String type;
