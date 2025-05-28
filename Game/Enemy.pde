@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 public class Enemy{
   private float speed;
   private float health;
@@ -42,4 +39,3 @@ public class Enemy{
     }
   }
 }
->>>>>>> main
