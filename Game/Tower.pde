@@ -36,14 +36,16 @@ return location;
 
 void shoot(Enemy[] list){
   for (Enemy enemy:list){
-    if (withinRange(enemy) <= range){
+    if (withinRange(enemy) <= range*range){
       enemy.damage(this);
     }
   }
 }
 
 float withinRange(Enemy enemy){
-  return sqrt(pow((location.x-enemy.getX()), 2) + pow((location.y-enemy.getY()),2));
+    float x = location.x - enemy.x;
+    float y = location.y - enemy.y;
+    return x*x + y*y;
 }
 
 }
