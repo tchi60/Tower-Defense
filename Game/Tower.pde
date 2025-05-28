@@ -34,7 +34,7 @@ return location;
 }
 
 
-void shoot(Array list){
+void shoot(Enemy[] list){
   for (Enemy enemy:list){
     if (withinRange(enemy) <= range){
       enemy.damage(this);
