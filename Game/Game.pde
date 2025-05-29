@@ -1,4 +1,4 @@
-int numLevel;
+int numLevel; 
 float spawnRate;
 ArrayList<Enemy> enemies;
 ArrayList<Tower> towers;
@@ -9,6 +9,11 @@ float enemySpeed;
 int levelType;
 PVector enemyStart;
 Level level;
+ArrayList<Button> buttons;
+
+int gridSize = 50;
+int cols = width / gridSize;
+int rows = height / gridSize;
 
 void setup() {
   size(800, 600);
@@ -18,16 +23,24 @@ void setup() {
   baseHealth = 100;
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
+  buttons = new ArrayList<Button>();
   spawnRate = 10;
   level.setup();
+  towerButtons();
+}
+
+void towerButtons() {
+  for (int i = 0; i < 5; i++) {
+    PVector position = new PVector(0, i * gridSize);
+    Button button = new Button(position, gridSize * 2, gridSize, "button");
+    buttons.add(button);
+  }
 }
 
 void draw() {
   background(0);
 
-  int gridSize = 50;
-  int cols = width / gridSize;
-  int rows = height / gridSize;
+
 
   stroke(30);
   strokeWeight(2);
@@ -38,8 +51,14 @@ void draw() {
       rect(x * gridSize, y * gridSize, gridSize, gridSize);
     }
   }
+  
+
 
   level.draw();
+  
+    for (Button button : buttons) {
+    button.draw();
+  }
   if (frameCount % spawnRate == 0){
     addEnemy();
   }

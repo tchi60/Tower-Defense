@@ -125,6 +125,16 @@ class Level{
     
     return centers;
   }
+  
+    PVector[] getPathTowers() {
+    PVector[] centers = new PVector[pathBlocks];
+    
+    for (int i = 0; i < pathBlocks; i++) {
+      centers[i] = new PVector(path[i].x * gridSize, path[i].y * gridSize);
+    }
+    
+    return centers;
+  }
 
   void draw() {
     noStroke();
