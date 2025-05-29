@@ -27,6 +27,18 @@ public class Enemy{
   public float getY(){
     return position.y;
   }
+public int getPath(PVector[] paths, int gridSize){
+int currPath = 0;
+for (int i = 0, i < paths.size(), i++){
+currPath = i;
+if (position.x <= paths[i].x + gridsize && position.x >= paths[i].x - gridSize){
+if (position.y <= paths[i].y + gridsize && position.y >= paths[i].y - gridSize){
+break;
+}
+}
+}
+return i;
+}
   public void damage(Tower myTower){
     health -= myTower.getDamage() * defense;
     if (health <= 0){
