@@ -47,4 +47,9 @@ float withinRange(Enemy enemy){
     float y = location.y - enemy.getY();
     return x*x + y*y;
 }
+
+void display(){
+  fill(#C1F8FF);
+  rect(location.x, location.y, 50, 50);
+}
 }

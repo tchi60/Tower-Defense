@@ -1,4 +1,10 @@
 Level level;
+ArrayList<Tower> towers = new ArrayList<Tower>();
+
+int gridSize = 50;
+int cols = width / gridSize;
+int rows = height / gridSize;
+
 
 void setup() {
   size(800, 600);
@@ -8,10 +14,6 @@ void setup() {
 
 void draw() {
   background(0);
-
-  int gridSize = 50;
-  int cols = width / gridSize;
-  int rows = height / gridSize;
 
   stroke(30);
   strokeWeight(2);
@@ -24,4 +26,20 @@ void draw() {
   }
 
   level.draw();
+  
+   for (Tower t : towers) {
+     t.display();
+   }
+}
+
+void mouseClicked(){
+PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
+//check is place is on path before adding
+if (!isOnPath(mouseX,mouseY)){
+towers.add(new Tower(10,10,10,10,place));
+}
+}
+
+boolean isOnPath(float gridX, float gridY) {
+return false;
 }
