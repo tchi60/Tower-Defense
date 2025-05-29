@@ -1,6 +1,6 @@
 class Level{
   private int pathBlocks;
-  private int gridSize = 50;
+  private final int gridSize = 50;
   private String type;
   private int w, h;
   private PVector[] path;
