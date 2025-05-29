@@ -2,7 +2,7 @@ public class Enemy{
   private float health;
   private float defense;
   private String type;
-  private PVector position;
+  public PVector position;
   public boolean isAlive;
   
   public Enemy(float myHealth, float myDefense, String myType, PVector myPosition){
@@ -27,18 +27,18 @@ public class Enemy{
   public float getY(){
     return position.y;
   }
-public int getPath(PVector[] paths, int gridSize){
-int currPath = 0;
-for (int i = 0, i < paths.size(), i++){
-currPath = i;
-if (position.x <= paths[i].x + gridsize && position.x >= paths[i].x - gridSize){
-if (position.y <= paths[i].y + gridsize && position.y >= paths[i].y - gridSize){
-break;
-}
-}
-}
-return i;
-}
+  public int getPathBlock(PVector[] paths, int gridSize){
+  int currPath = 0;
+  for (int i = 0; i < paths.length; i++){
+    currPath = i;
+    if (position.x <= paths[i].x + gridSize && position.x >= paths[i].x - gridSize){
+      if (position.y <= paths[i].y + gridSize && position.y >= paths[i].y - gridSize){
+        break;
+      }
+    }
+  }
+  return currPath;
+  }
   public void damage(Tower myTower){
     health -= myTower.getDamage() * defense;
     if (health <= 0){
