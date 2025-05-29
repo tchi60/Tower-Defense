@@ -41,5 +41,5 @@ towers.add(new Tower(10,10,10,10,place));
 }
 
 boolean isOnPath(float gridX, float gridY) {
-return false;
+
 }
