@@ -10,6 +10,7 @@ int levelType;
 PVector enemyStart;
 Level level;
 ArrayList<Button> buttons;
+Button currentButton;
 
 int gridSize = 50;
 int cols = width / gridSize;
@@ -56,8 +57,12 @@ void draw() {
 
   level.draw();
   
-    for (Button button : buttons) {
+  for (Button button : buttons) {
     button.draw();
+    
+    if (button.mouseOver()) {
+      currentButton = button;
+    }
   }
   if (frameCount % spawnRate == 0){
     addEnemy();
