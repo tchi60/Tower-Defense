@@ -19,11 +19,13 @@ void setup() {
   baseHealth = 100;
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
-  spawnRate = 5;
-  enemySpeed = 5;
+  spawnRate = 100;
+  enemySpeed = 10;
   level.setup();
   path = level.getPath();
   enemyStart = path[0];
+  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
+  enemies.add(newEnemy);
 }
 
 void draw() {
@@ -44,10 +46,10 @@ void draw() {
   }
 
   level.draw();
-  if (frameCount % spawnRate == 0 && frameCount > 10){
-    addEnemy();
+  for (int i = 0; i < enemies.size(); i++){
+    drawEnemy(enemies.get(i));
   }
-  if (frameCount % enemySpeed == 0 && frameCount > 10){
+  if (frameCount % enemySpeed == 0){
     updateEnemy();
   }
 }
@@ -58,14 +60,16 @@ void addEnemy(){
 }
 
 void updateEnemy(){
-  for (int i = 0; i < enemies.size(); i++){
-    Enemy currEnemy = enemies.get(i);
-    PVector currPos = currEnemy.position;
-    int currPath = currEnemy.getPathBlock(path, level.gridSize / 2);
-    PVector dir = Game.getNextDir(currPath, path);
-    currPos.add(dir);
-    currEnemy.position = currPos;
-    drawEnemy(currEnemy);
+  for (int i = 0; i < path.length - 1; i++){
+    PVector currPath = path[i];
+    PVector dir = Game.getNextDir(i, path);
+    for (int k = 0; k < enemies.size(); k++){
+      Enemy currEnemy = enemies.get(k);
+      PVector currPos = currEnemy.position;
+      if(Math.abs(currPos.x - currPath.x) <= level.gridSize / 2 && Math.abs(currPos.y - currPath.y) <= level.gridSize / 2){
+        currPos.add(dir);
+      }
+    }
   }
 }
 
@@ -80,10 +84,10 @@ public static PVector getNextDir(int i, PVector[] paths){
   PVector curr = paths[i];
   PVector next = paths[i + 1];
   PVector out = new PVector(0,0);
-  PVector N = new PVector(0, -10);
-  PVector E = new PVector(10, 0);
-  PVector S = new PVector(0, 10);
-  PVector W = new PVector(-10,0);
+  PVector N = new PVector(0, -1);
+  PVector E = new PVector(1, 0);
+  PVector S = new PVector(0, 1);
+  PVector W = new PVector(-1,0);
   if (next.x > curr.x){
     out = E;
   }
