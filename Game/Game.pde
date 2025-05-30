@@ -1,7 +1,7 @@
 Level level;
 ArrayList<Tower> towers = new ArrayList<Tower>();
 
-
+  int money = 500;
   int gridSize = 50;
   int cols = width / gridSize;
   int rows = height / gridSize;
@@ -27,6 +27,10 @@ void draw() {
   }
 
   level.draw();
+  
+  fill(#C1F8FF);
+  text(towers.size(), 20, 40);
+  text(money, 20, 60);
   
    for (Tower t : towers) {
      t.display();
