@@ -1,10 +1,10 @@
 Level level;
 ArrayList<Tower> towers = new ArrayList<Tower>();
-PVector[] pathLocation = level.getPathTowers();
 
-int gridSize = 50;
-int cols = width / gridSize;
-int rows = height / gridSize;
+
+  int gridSize = 50;
+  int cols = width / gridSize;
+  int rows = height / gridSize;
 
 
 void setup() {
@@ -15,7 +15,7 @@ void setup() {
 
 void draw() {
   background(0);
-
+  
   stroke(30);
   strokeWeight(2);
   noFill();
@@ -33,16 +33,22 @@ void draw() {
    }
 }
 
+
 void mouseClicked(){
 PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
 //check is place is on path before adding
-if (!isOnPath(mouseX,mouseY)){
+if (!isOnPath(level)){
 towers.add(new Tower(10,10,10,10,place));
 }
 }
 
-boolean isOnPath(float gridX, float gridY) {
-for (PVector corner : pathCorners) {
- if (
+boolean isOnPath(Level level){
+PVector[] pathLocation = level.getPathTowers();
+PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
+for (PVector blocks: pathLocation){
+if(place.x == blocks.x && place.y == blocks.y){
+  return true;
 }
+}
+return false;
 }
