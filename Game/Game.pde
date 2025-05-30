@@ -1,5 +1,6 @@
 Level level;
 ArrayList<Tower> towers = new ArrayList<Tower>();
+PVector[] pathLocation = level.getPathTowers();
 
 int gridSize = 50;
 int cols = width / gridSize;
@@ -41,5 +42,7 @@ towers.add(new Tower(10,10,10,10,place));
 }
 
 boolean isOnPath(float gridX, float gridY) {
-
+for (PVector corner : pathCorners) {
+ if (
+}
 }
