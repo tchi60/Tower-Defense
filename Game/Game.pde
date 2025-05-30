@@ -42,7 +42,9 @@ void mouseClicked(){
 PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
 //check is place is on path before adding
 if (!isOnPath(level)){
-towers.add(new Tower(10,10,10,10,place));
+Tower t = new Tower(10,10,10,10,place);
+towers.add(t);
+this.money -= t.getCost();
 }
 }
 
