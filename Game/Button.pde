@@ -2,16 +2,18 @@ class Button {
   private PVector position;
   private int w, h;
   private String text;
-  private String function;
   private color c;
   
-  Button(PVector p, int wid, int hei, String t, String f) {
+  Button(PVector p, int wid, int hei, String t) {
     position = p;
     w = wid;
     h = hei;
     text = t;
-    function = f;
     c = color(255);
+  }
+  
+  String getText(){
+  return text;
   }
   
   boolean mouseOver() {
@@ -24,7 +26,7 @@ class Button {
     return false;
   }
   
-  void draw() {
+  void display() {
     stroke(0);
     fill(c);
     strokeWeight(3);
@@ -33,4 +35,14 @@ class Button {
     textAlign(CENTER);
     text(text, position.x + w / 2, position.y + h / 2);
   }
+  
+  boolean isClicked() {
+    // Check if mouse is within the button's boundaries
+    if (mouseX >= position.x && mouseX <= position.x + width && mouseY >= position.y && mouseY <= position.y + height) {
+      return true; // Return true if clicked
+    } else {
+      return false; // Return false if not clicked
+    }
+  }
+  
 }

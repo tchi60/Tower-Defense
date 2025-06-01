@@ -48,6 +48,7 @@ float withinRange(Enemy enemy){
     return x*x + y*y;
 }
 
+
 void display(){
   fill(#C1F8FF);
   rect(location.x, location.y, 50, 50);
