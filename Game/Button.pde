@@ -30,7 +30,7 @@ class Button {
     strokeWeight(3);
     rect(position.x, position.y, w, h);
     fill(0);
-    textAlign(CENTER);
+    textAlign(CENTER, CENTER);
     text(text, position.x + w / 2, position.y + h / 2);
   }
 }
