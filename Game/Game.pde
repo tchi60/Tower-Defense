@@ -26,6 +26,7 @@ void setup() {
   baseHealth = 100;
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
+  buttons = new ArrayList<Button>();
   spawnRate = 100;
   enemySpeed = 1;
   level.setup();
@@ -34,6 +35,7 @@ void setup() {
   enemyStart = path[0];
   Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
+  towerButtons();
 }
 
 void towerButtons() {
@@ -46,11 +48,6 @@ void towerButtons() {
 
 void draw() {
   background(0);
-
-  int gridSize = level.getGridSize();
-  int cols = width / gridSize;
-  int rows = height / gridSize;
-
   stroke(30);
   strokeWeight(2);
   noFill();
