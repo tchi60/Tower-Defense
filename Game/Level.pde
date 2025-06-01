@@ -1,6 +1,6 @@
-class Level{
+class Level {
   private int pathBlocks;
-  private final int gridSize = 50;
+  private int gridSize = 50;
   private String type;
   private int w, h;
   private PVector[] path;
@@ -12,6 +12,10 @@ class Level{
     w = width / gridSize;
     h = height / gridSize;
     path = new PVector[pathBlocks];
+  }
+  
+  public int getGridSize(){
+    return gridSize;
   }
 
   void setup() {
@@ -115,10 +119,9 @@ class Level{
 
     return false;
   }
-
   PVector[] getPath() {
     PVector[] centers = new PVector[pathBlocks];
-    
+
     for (int i = 0; i < pathBlocks; i++) {
       centers[i] = new PVector(path[i].x * gridSize + gridSize / 2, path[i].y * gridSize + gridSize / 2);
     }
