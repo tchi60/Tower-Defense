@@ -10,6 +10,13 @@ int levelType;
 PVector enemyStart;
 Level level;
 PVector[] path;
+ArrayList<Button> buttons;
+Button currentButton;
+
+int gridSize = 50;
+int cols = width / gridSize;
+int rows = height / gridSize;
+
 
 void setup() {
   size(800, 600);
