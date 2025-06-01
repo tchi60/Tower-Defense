@@ -22,10 +22,19 @@ void setup() {
   spawnRate = 100;
   enemySpeed = 1;
   level.setup();
+  towerButtons();
   path = level.getPath();
   enemyStart = path[0];
   Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
+}
+
+void towerButtons() {
+  for (int i = 0; i < 5; i++) {
+    PVector position = new PVector(0, i * gridSize);
+    Button button = new Button(position, gridSize * 2, gridSize, "button");
+    buttons.add(button);
+  }
 }
 
 void draw() {
@@ -46,6 +55,14 @@ void draw() {
   }
 
   level.draw();
+  
+  for (Button button : buttons) {
+    button.draw();
+    
+    if (button.mouseOver()) {
+      currentButton = button;
+    }
+  }
   
   for (int i = 0; i < enemies.size(); i++){
     drawEnemy(enemies.get(i));
