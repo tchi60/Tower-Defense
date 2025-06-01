@@ -18,10 +18,13 @@ int gridSize = 50;
 int cols;
 int rows;
 
+int uiCols = 3;
+int uiWidth = gridSize * uiCols;
+
 void setup() {
-  size(800, 600);
+  size(950, 600);
   
-  cols = width / gridSize;
+  cols = (width - uiWidth) / gridSize;
   rows = height / gridSize;
   numPaths = 50;
   levelType = (int)(Math.random() * levelTypes.length);
@@ -33,12 +36,23 @@ void setup() {
   spawnRate = 10;
   level.setup();
   towerButtons();
+  settingsButton();
 }
 
 void towerButtons() {
-  for (int i = 0; i < 5; i++) {
-    PVector position = new PVector(0, i * gridSize);
-    Button button = new Button(position, gridSize * 2, gridSize, "button");
+  for (int i = 0; i < 8; i++) {
+    PVector position = new PVector(0, i * gridSize + 3 * gridSize);
+    
+    Button button = new Button(position, gridSize * 3, gridSize, "button" + i, "tower");
+    buttons.add(button);
+  }
+}
+
+void settingsButton() {
+  for (int i = 0; i < 3; i++) {
+    PVector position = new PVector(gridSize * i, height - gridSize);
+    
+    Button button = new Button(position, gridSize, gridSize, "button" + i, "settings");
     buttons.add(button);
   }
 }
@@ -52,29 +66,26 @@ void draw() {
 
   for (int y = 0; y < rows; y++) {
     for (int x = 0; x < cols; x++) {
-      rect(x * gridSize, y * gridSize, gridSize, gridSize);
+      rect(uiWidth + x * gridSize, y * gridSize, gridSize, gridSize);
     }
   }
   
   level.draw();
   
+  currentButton = null;
   for (Button button : buttons) {
     button.draw();
-    
     if (button.mouseOver()) {
       currentButton = button;
-    } else {
-      currentButton = null;
     }
   }
-  
+
   for (Tower tower : towers) {
     tower.display();
   }
   
-  if (preview != null) {
-    PVector location = new PVector(mouseX - gridSize / 2, mouseY - gridSize / 2);
-    
+  if (preview != null && mouseX >= uiWidth) {
+    PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     preview.setLocation(location);
     preview.display();
   }
@@ -88,21 +99,15 @@ void draw() {
 }
 
 void mouseClicked() {
-  if (currentButton != null) {
-    if (!placingTower) {
-      PVector location = new PVector(mouseX - gridSize / 2, mouseY - gridSize / 2);
+  if (placingTower && currentButton == null && mouseX >= uiWidth) {
+    PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
-      preview = new Tower(10, 10, 10, 10, location);
-    
-      placingTower = true;
-    } else {
-      PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
-    
-      towers.add(new Tower(10, 10, 10, 10, location));
-      
-      placingTower = false;
-    }
-
+    towers.add(new Tower(10, 10, 10, 10, location));
+    preview = null;
+    placingTower = false;
+  } else if (currentButton != null && !placingTower) {
+    preview = new Tower(10, 10, 10, 10, new PVector(0, 0));
+    placingTower = true;
   }
 }
 

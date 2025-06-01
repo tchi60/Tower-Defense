@@ -1,8 +1,8 @@
 //Instance Variables
 class Tower{
-float damage, rate, cost, range;
-String type;
-PVector location;
+private float damage, rate, cost, range;
+private String type;
+private PVector location;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
 this.damage = damage;
