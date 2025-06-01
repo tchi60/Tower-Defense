@@ -35,14 +35,5 @@ class Button {
     textAlign(CENTER);
     text(text, position.x + w / 2, position.y + h / 2);
   }
-  
-  boolean isClicked() {
-    // Check if mouse is within the button's boundaries
-    if (mouseX >= position.x && mouseX <= position.x + width && mouseY >= position.y && mouseY <= position.y + height) {
-      return true; // Return true if clicked
-    } else {
-      return false; // Return false if not clicked
-    }
-  }
-  
+    
 }

@@ -3,17 +3,22 @@ Level level;
 ArrayList<Tower> towers = new ArrayList<Tower>();
 ArrayList<Button> buttons = new ArrayList<Button>();
 Button currentButton;
+Tower preview;
 Tower currentTower;
+boolean placingTower = false;
 
   int money = 500;
   int gridSize = 50;
-  int cols = width / gridSize;
-  int rows = height / gridSize;
+  int cols;
+  int rows;
   int uiCols = 3;
   int uiWidth = gridSize * uiCols;
 
 void setup() {
-  size(800, 600);
+  size(950, 600);
+  cols = (width - uiWidth) / gridSize;
+  rows = height / gridSize;
+  
   level = new Level(50, "test");
   level.setup();
   towerButtons();
@@ -23,7 +28,7 @@ void towerButtons() {
   for (int i = 0; i < 3; i++) {
     PVector position = new PVector(0, i * gridSize + 3 * gridSize);
     
-    Button button = new Button(position, gridSize * 2, gridSize, "Tower" + i);
+    Button button = new Button(position, gridSize * 3, gridSize, "Tower" + i);
     buttons.add(button);
   }
 }
@@ -51,8 +56,17 @@ void draw() {
      t.display();
    }
    
+    if (preview != null && mouseX >= uiWidth) {
+    PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
+    preview.setLocation(location);
+    preview.display();
+  }
+   
   for (Button button : buttons) {
     button.display();
+    if (button.mouseOver()) {
+      currentButton = button;
+    }
   }
 
 }
@@ -68,28 +82,14 @@ return new Tower(10,10,10,10,place);
 }
 
 void mouseClicked(){
+    if (!isOnPath(level) && !currentButton.mouseOver()){
 PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
-
-for (Button button : buttons) {
-    if (button.isClicked()){
-      currentButton = button;
-      println(currentButton.getText());
-    }
-}
-
-//println(currentButton.isClicked());
-println(isOnPath(level));
-}
-
-/*
-    if (!isOnPath(level))){
       currentTower = findTowerStats(place);
       towers.add(currentTower);
       this.money -= currentTower.getCost();
-      println(currentTower.getCost());
       }
-      */
-      
+}      
+
 boolean isOnPath(Level level){
   PVector[] pathLocation = level.getPathTowers();
   PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
@@ -104,11 +104,7 @@ boolean isOnPath(Level level){
 
 
 //check is place is on path before adding
-/*  if (!isOnPath(level)){
-     towers.add(currentTower);
-     this.money -= currentTower.getCost();
-     PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
-  }
+/* 
 */
 
 

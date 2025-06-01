@@ -33,6 +33,10 @@ PVector getLocation(){
 return location;
 }
 
+void setLocation(PVector l) {
+  location = l;
+}
+
 
 void shoot(Enemy[] list){
   for (Enemy enemy:list){
