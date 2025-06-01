@@ -20,7 +20,7 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   spawnRate = 100;
-  enemySpeed = 10;
+  enemySpeed = 1;
   level.setup();
   path = level.getPath();
   enemyStart = path[0];
@@ -31,7 +31,7 @@ void setup() {
 void draw() {
   background(0);
 
-  int gridSize = level.gridSize;
+  int gridSize = level.getGridSize();
   int cols = width / gridSize;
   int rows = height / gridSize;
 
@@ -46,8 +46,12 @@ void draw() {
   }
 
   level.draw();
+  
   for (int i = 0; i < enemies.size(); i++){
     drawEnemy(enemies.get(i));
+  }
+  if (frameCount % spawnRate == 0){
+    addEnemy();
   }
   if (frameCount % enemySpeed == 0){
     updateEnemy();
@@ -62,22 +66,25 @@ void addEnemy(){
 void updateEnemy(){
   for (int i = 0; i < path.length - 1; i++){
     PVector currPath = path[i];
-    PVector dir = Game.getNextDir(i, path);
     for (int k = 0; k < enemies.size(); k++){
       Enemy currEnemy = enemies.get(k);
-      PVector currPos = currEnemy.position;
-      if(Math.abs(currPos.x - currPath.x) <= level.gridSize / 2 && Math.abs(currPos.y - currPath.y) <= level.gridSize / 2){
-        currPos.add(dir);
+      PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
+      if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
+        PVector myDir = Game.getNextDir(i, path);
+        currEnemy.setDir(myDir);
+      }
+      if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
+        currEnemy.setPosition(currPos.add(currEnemy.getDir()));
       }
     }
   }
 }
 
 void drawEnemy(Enemy myEnemy){
-  PVector position = myEnemy.position;
-  fill(255, 0, 0);
-  stroke(255, 0, 0);
-  rect(position.x, position.y, 50, 10);
+  PVector position = new PVector(myEnemy.getX(), myEnemy.getY());
+  fill(myEnemy.myColor, 0, 0);
+  stroke(myEnemy.myColor, 0, 0);
+  rect(position.x, position.y, 10, 20);
 }
   
 public static PVector getNextDir(int i, PVector[] paths){
