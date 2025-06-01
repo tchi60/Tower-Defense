@@ -27,13 +27,15 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
-  spawnRate = 10;
+  spawnRate = 100;
+  enemySpeed = 1;
   level.setup();
   towerButtons();
   path = level.getPath();
   enemyStart = path[0];
   Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
+  towerButtons();
 }
 
 void towerButtons() {
@@ -46,13 +48,6 @@ void towerButtons() {
 
 void draw() {
   background(0);
-
-
-  int gridSize = level.getGridSize();
-  int cols = width / gridSize;
-  int rows = height / gridSize;
-
-
   stroke(30);
   strokeWeight(2);
   noFill();
@@ -64,43 +59,15 @@ void draw() {
   }
 
   level.draw();
-  
-  for (Button button : buttons) {
-    button.draw();
-    
-    if (button.mouseOver()) {
-      currentButton = button;
-    }
-  }
-  if (frameCount % spawnRate == 0){
-    addEnemy();
-  }
-  if (frameCount % enemySpeed == 0){
-    updateEnemy();
-  }
-}
-
-void addEnemy(){
-  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
-  enemies.add(newEnemy);
-}
-
-void updateEnemy(){
-  for (int i = 0; i < enemies.size(); i++){
-    
-  }
-}
-  
-  for (Button button : buttons) {
-    button.draw();
-    
-    if (button.mouseOver()) {
-      currentButton = button;
-    }
-  }
-  
   for (int i = 0; i < enemies.size(); i++){
     drawEnemy(enemies.get(i));
+  }
+  for (Button button : buttons) {
+    button.draw();
+    
+    if (button.mouseOver()) {
+      currentButton = button;
+    }
   }
   if (frameCount % spawnRate == 0){
     addEnemy();
