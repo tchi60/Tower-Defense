@@ -1,4 +1,3 @@
-//Instance Variables
 class Tower{
 float damage, rate, cost, range;
 String type;
