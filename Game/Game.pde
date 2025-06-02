@@ -82,7 +82,7 @@ return new Tower(10,10,10,10,place);
 }
 
 void mouseClicked(){
-    if (!isOnPath(level) && !currentButton.mouseOver()){
+    if (!isOnPath(level) && !currentButton.mouseOver() && mouseX >= uiWidth){
 PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));
       currentTower = findTowerStats(place);
       towers.add(currentTower);
