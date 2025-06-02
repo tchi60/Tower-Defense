@@ -1,4 +1,3 @@
-
 Level level;
 ArrayList<Tower> towers = new ArrayList<Tower>();
 ArrayList<Button> buttons = new ArrayList<Button>();
