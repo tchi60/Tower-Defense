@@ -38,7 +38,7 @@ void setLocation(PVector l) {
 }
 
 
-void shoot(Enemy[] list){
+void shoot(ArrayList<Enemy> list){
   for (Enemy enemy:list){
     if (withinRange(enemy) <= range*range){
       enemy.damage(this);
