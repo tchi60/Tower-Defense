@@ -40,7 +40,7 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
-  spawnRate = 40;
+  spawnRate = 50;
   enemySpeed = 5;
   level.setup();
   towerButtons();
@@ -101,7 +101,15 @@ void draw() {
   
     if (preview != null && mouseX >= uiWidth) {
       PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
+      
       preview.setLocation(location);
+      
+      if (onPath(location) || onTower(location)) {
+        preview.invalid();
+      } else {
+        preview.valid();
+      }
+      
       preview.display();
     }
     
@@ -134,6 +142,25 @@ void draw() {
   }
 }
 
+boolean onPath(PVector location) {
+  for (PVector tile : path) {    
+    if (location.x >= tile.x && location.x <= tile.x + gridSize && location.y >= tile.y && location.y <= tile.y + gridSize) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+boolean onTower(PVector location) {
+  for (Tower tower : towers) {    
+    if (location.x >= tower.getLocation().x && location.x < tower.getLocation().x + gridSize && location.y >= tower.getLocation().y && location.y < tower.getLocation().y + gridSize) {
+      return true;
+    }
+  }
+  
+  return false;
+}
 
 void mouseClicked() {
   if (placingTower && currentButton == null && mouseX >= uiWidth) {
