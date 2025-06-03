@@ -14,6 +14,10 @@ class Level {
     h = height / gridSize;
     path = new PVector[pathBlocks];
   }
+  
+  int getGridSize() {
+    return gridSize;
+  }
 
   void setup() {
     boolean success = false;
