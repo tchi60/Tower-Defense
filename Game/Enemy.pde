@@ -4,6 +4,8 @@ public class Enemy{
   private String type;
   private PVector position;
   public boolean isAlive;
+  public int myColor;
+  private PVector dir;
   
   public Enemy(float myHealth, float myDefense, String myType, PVector myPosition){
     health = myHealth;
@@ -11,8 +13,9 @@ public class Enemy{
     type = myType;
     position = myPosition;
     isAlive = true;
+    myColor = (int)(Math.random() * 255);
+    dir = new PVector(0,0);
   }
-
   public float getHealth(){
     return health;
   }
@@ -28,11 +31,19 @@ public class Enemy{
   public float getY(){
     return position.y;
   }
-  //public int getPathBlock(PVector[] 
   public void damage(Tower myTower){
     health -= myTower.getDamage() * defense;
     if (health <= 0){
       isAlive = false;
     }
+  }
+  public void setPosition(PVector x){
+    position = x;
+  }
+  public PVector getDir(){
+    return dir;
+  }
+  public void setDir(PVector x){
+    dir = x;
   }
 }
