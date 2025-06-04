@@ -14,6 +14,10 @@ class Level {
     h = height / gridSize;
     path = new PVector[pathBlocks];
   }
+  
+  int getGridSize() {
+    return gridSize;
+  }
 
   void setup() {
     boolean success = false;
@@ -127,8 +131,7 @@ class Level {
     return centers;
   }
   
-  
-      PVector[] getPathTowers() {
+  PVector[] getPathTowers() {
     PVector[] centers = new PVector[pathBlocks];
     
     for (int i = 0; i < pathBlocks; i++) {

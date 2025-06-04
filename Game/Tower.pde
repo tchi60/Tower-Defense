@@ -3,6 +3,7 @@ class Tower{
 float damage, rate, cost, range;
 String type;
 PVector location;
+private color colour;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
 this.damage = damage;
@@ -35,6 +36,15 @@ return location;
 
 void setLocation(PVector l) {
   location = l;
+}
+
+
+void invalid() {
+  colour = color(255, 0, 0);
+}
+
+void valid() {
+  colour = color(0, 255, 0);
 }
 
 

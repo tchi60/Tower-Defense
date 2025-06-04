@@ -1,21 +1,20 @@
 public class Enemy{
-  private float speed;
   private float health;
   private float defense;
   private String type;
   private PVector position;
   public boolean isAlive;
+  public int myColor;
+  private PVector dir;
   
-  public Enemy(float mySpeed, float myHealth, float myDefense, String myType, PVector myPosition){
-    speed = mySpeed;
+  public Enemy(float myHealth, float myDefense, String myType, PVector myPosition){
     health = myHealth;
     defense = myDefense;
     type = myType;
     position = myPosition;
     isAlive = true;
-  }
-  public float getSpeed(){
-    return speed;
+    myColor = (int)(Math.random() * 255);
+    dir = new PVector(0,0);
   }
   public float getHealth(){
     return health;
@@ -37,5 +36,14 @@ public class Enemy{
     if (health <= 0){
       isAlive = false;
     }
+  }
+  public void setPosition(PVector x){
+    position = x;
+  }
+  public PVector getDir(){
+    return dir;
+  }
+  public void setDir(PVector x){
+    dir = x;
   }
 }
