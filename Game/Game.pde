@@ -13,6 +13,7 @@ PVector enemyStart;
 Level level;
 PVector[] path;
 Button currentButton;
+Button recentButton;
 Tower currentTower;
 boolean placingTower = false;
 boolean gameOver = false;
@@ -153,11 +154,11 @@ void draw() {
 }
 
 Tower findTowerStats(PVector place){
-if (currentButton.getText().equals("Tower1")){
+if (recentButton.getText().equals("Tower1")){
 return new Tower(20,20,20,20,place);
 }
 
-if (currentButton.getText().equals("Tower2")){
+if (recentButton.getText().equals("Tower2")){
 return new Tower(30,30,30,30,place);
 }
 return new Tower(10,10,10,10,place);
@@ -166,7 +167,7 @@ return new Tower(10,10,10,10,place);
 
 boolean onPath(PVector location) {
   for (PVector tile : path) {    
-    if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x + gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y + gridSize / 2) {
+    if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x - gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y - gridSize / 2) {
       return true;
     }
   }
@@ -207,7 +208,7 @@ void mouseClicked() {
     }  
   } else if (currentButton != null) {
     String f = currentButton.function;
-    
+    recentButton = currentButton;
     if (f.equals("Tower")) {
       preview = (findTowerStats(location));
       placingTower = true;
