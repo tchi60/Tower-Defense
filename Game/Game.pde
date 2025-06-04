@@ -144,7 +144,7 @@ void draw() {
 
 boolean onPath(PVector location) {
   for (PVector tile : path) {    
-    if (location.x >= tile.x && location.x <= tile.x + gridSize && location.y >= tile.y && location.y <= tile.y + gridSize) {
+    if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x + gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y + gridSize / 2) {
       return true;
     }
   }
@@ -165,10 +165,12 @@ boolean onTower(PVector location) {
 void mouseClicked() {
   if (placingTower && currentButton == null && mouseX >= uiWidth) {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
-    towers.add(new Tower(10, 10, 10, 10, location));
-    preview = null;
-    placingTower = false;
     
+    if (!onTower(location) && !onPath(location)) {
+      towers.add(new Tower(10, 10, 10, 10, location));
+      preview = null;
+      placingTower = false;
+    }  
   } else if (currentButton != null) {
     String f = currentButton.function;
     
