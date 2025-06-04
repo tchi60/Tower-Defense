@@ -197,20 +197,21 @@ boolean onTower(PVector location) {
 
 
 void mouseClicked() {
-if (currentButton != null) {
-    String f = currentButton.function;
-        PVector place = new PVector(gridSize * (mouseX/gridSize), gridSize * (mouseY/gridSize));  
-        
-    if (f.equals("Tower")) {
-      if (!isOnPath(level) && !currentButton.mouseOver() && mouseX >= uiWidth && !onTower(place)){
-         currentTower = findTowerStats(place);
-         preview = currentTower;
-         towers.add(currentTower);
-         this.money -= currentTower.getCost();
-        placingTower = true;
-      } 
-    }
+  PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
+ if (placingTower && currentButton == null && mouseX >= uiWidth) {
+    if (!onTower(location) && !onPath(location)) {
+      towers.add(findTowerStats(location));
+      preview = null;
+      placingTower = false;
+    }  
+  } else if (currentButton != null) {
+    String f = currentButton.function;
+    
+    if (f.equals("Tower")) {
+      preview = (findTowerStats(location));
+      placingTower = true;
+    } 
     else if (f.equals("Top Score")) {
       topScoreShow = !topScoreShow;
     } 
