@@ -144,7 +144,7 @@ void draw() {
 
 boolean onPath(PVector location) {
   for (PVector tile : path) {    
-    if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x + gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y + gridSize / 2) {
+    if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x - gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y - gridSize / 2) {
       return true;
     }
   }
