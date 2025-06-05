@@ -52,7 +52,7 @@ void setup() {
 
 void towerButtons() {
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 8; i++) {
     PVector position = new PVector(0, i * gridSize + 3 * gridSize);
     Button button = new Button(position, gridSize * 3, gridSize, "Tower" + i, "Tower");
     buttons.add(button);
@@ -155,13 +155,28 @@ void draw() {
 
 Tower findTowerStats(PVector place){
 if (recentButton.getText().equals("Tower1")){
-return new Tower(20,20,20,20,place);
+return new Tower(5,0.25,175,225,place);
 }
 
 if (recentButton.getText().equals("Tower2")){
-return new Tower(30,30,30,30,place);
+return new Tower(0.25,4,125,125,place);
 }
-return new Tower(10,10,10,10,place);
+if (recentButton.getText().equals("Tower3")){
+return new Tower(0.25,4,125,125,place);
+}
+if (recentButton.getText().equals("Tower4")){
+return new Tower(1,0.5,75,75,place);
+}
+if (recentButton.getText().equals("Tower5")){
+return new Tower(3,0.5,175,125,place);
+}
+if (recentButton.getText().equals("Tower6")){
+return new Tower(1,5,150,175,place);
+}
+if (recentButton.getText().equals("Tower7")){
+return new Tower(256,0.1,350,75,place);
+}
+return new Tower(1,1,100,125,place);
 }
 
 
@@ -202,7 +217,9 @@ void mouseClicked() {
     
  if (placingTower && currentButton == null && mouseX >= uiWidth) {
     if (!onTower(location) && !onPath(location)) {
-      towers.add(findTowerStats(location));
+      Tower towering = findTowerStats(location);
+      towers.add(towering);
+      money -= towering.getCost();
       preview = null;
       placingTower = false;
     }  
