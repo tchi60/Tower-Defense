@@ -6,8 +6,9 @@ public class Enemy{
   public boolean isAlive;
   public int myColor;
   private PVector dir;
+  private float enemySpeed;
   
-  public Enemy(float myHealth, float myDefense, String myType, PVector myPosition){
+  public Enemy(float myHealth, float myDefense, float mySpeed, String myType, PVector myPosition){
     health = myHealth;
     defense = myDefense;
     type = myType;
@@ -15,6 +16,7 @@ public class Enemy{
     isAlive = true;
     myColor = (int)(Math.random() * 255);
     dir = new PVector(0,0);
+    enemySpeed = mySpeed;
   }
 
   public float getHealth(){
@@ -49,5 +51,27 @@ public class Enemy{
   public void setDir(PVector x){
     dir = x;
   }
+  public PVector getNextDir(int i, PVector[] paths){
+  PVector curr = paths[i];
+  PVector next = paths[i + 1];
+  PVector out = new PVector(0,0);
+  PVector N = new PVector(0, -1 * enemySpeed);
+  PVector E = new PVector(enemySpeed, 0);
+  PVector S = new PVector(0, enemySpeed);
+  PVector W = new PVector(-1 * enemySpeed,0);
+  if (next.x > curr.x){
+    out = E;
+  }
+  if (next.x < curr.x){
+    out = W;
+  }
+  if (next.y > curr.y){
+    out = S;
+  }
+  if (next.y < curr.y){
+    out = N;
+  }
+  return out;
+}
 
 }

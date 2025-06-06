@@ -192,7 +192,7 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
+  Enemy newEnemy = new Enemy(100, 0.9, enemySpeed, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
 }
 
@@ -203,7 +203,7 @@ void updateEnemy(){
       Enemy currEnemy = enemies.get(k);
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
       if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
-        PVector myDir = this.getNextDir(i, path);
+        PVector myDir = currEnemy.getNextDir(i, path);
         currEnemy.setDir(myDir);
       }
       if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
@@ -228,25 +228,3 @@ void drawEnemy(Enemy myEnemy){
   rect(position.x, position.y, 10, 10);
 }
   
-public PVector getNextDir(int i, PVector[] paths){
-  PVector curr = paths[i];
-  PVector next = paths[i + 1];
-  PVector out = new PVector(0,0);
-  PVector N = new PVector(0, -1 * enemySpeed);
-  PVector E = new PVector(enemySpeed, 0);
-  PVector S = new PVector(0, enemySpeed);
-  PVector W = new PVector(-1 * enemySpeed,0);
-  if (next.x > curr.x){
-    out = E;
-  }
-  if (next.x < curr.x){
-    out = W;
-  }
-  if (next.y > curr.y){
-    out = S;
-  }
-  if (next.y < curr.y){
-    out = N;
-  }
-  return out;
-}
