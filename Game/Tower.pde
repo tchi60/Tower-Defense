@@ -1,8 +1,11 @@
+
+//Instance Variables
 class Tower{
-float damage, rate, cost, range;
-String type;
-PVector location;
+private float damage, rate, cost, range;
+private String type;
+private PVector location;
 ArrayList<Bullet> bullets;
+private color colour;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
 this.damage = damage;
@@ -11,6 +14,7 @@ this.cost = cost;
 this.range = range;
 this.location = location;
 bullets = new ArrayList<Bullet>();
+colour = color(150, 150, 200);
 }
 
 
@@ -39,6 +43,22 @@ ArrayList<Bullet> getBullets(){
 }
 
 
+color getColor() {
+  return colour;
+}
+
+void setLocation(PVector l) {
+  location = l;
+}
+
+void invalid() {
+  colour = color(255, 0, 0);
+}
+
+void valid() {
+  colour = color(0, 255, 0);
+}
+
 void shoot(Enemy[] list){
   for (Enemy enemy:list){
     if (withinRange(enemy) <= range*range){
@@ -56,7 +76,7 @@ float withinRange(Enemy enemy){
 }
 
 void display(){
-  fill(#C1F8FF);
+  fill(colour);
   rect(location.x, location.y, 50, 50);
 }
 }

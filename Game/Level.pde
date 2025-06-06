@@ -2,6 +2,7 @@
 class Level {
   private int pathBlocks;
   private int gridSize = 50;
+  private int uiCols = 3;
   private String type;
   private int w, h;
   private PVector[] path;
@@ -15,10 +16,9 @@ class Level {
     path = new PVector[pathBlocks];
   }
   
-  public int getGridSize(){
+  int getGridSize() {
     return gridSize;
   }
-
 
   void setup() {
     boolean success = false;
@@ -26,7 +26,7 @@ class Level {
     while (success == false) {
       pathIndex = 0;
       int startY = int(random(3, h - 3));
-      PVector start = new PVector(0, startY);
+      PVector start = new PVector(uiCols, startY);
       path[pathIndex] = start;
       pathIndex++;
       success = create(start, 1);
@@ -68,7 +68,7 @@ class Level {
       int newX = int(current.x) + dirs[order[i]][0];
       int newY = int(current.y) + dirs[order[i]][1];
 
-      if (newX < 0 || newY < 0 || newX >= w || newY >= h)
+      if (newX < uiCols || newY < 0 || newX >= w || newY >= h)
         continue;
       if (visited(newX, newY))
         continue;

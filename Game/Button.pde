@@ -2,13 +2,15 @@ class Button {
   private PVector position;
   private int w, h;
   private String text;
+  private String function;
   private color c;
   
-  Button(PVector p, int wid, int hei, String t) {
+  Button(PVector p, int wid, int hei, String t, String f) {
     position = p;
     w = wid;
     h = hei;
     text = t;
+    function = f;
     c = color(255);
   }
   
@@ -28,7 +30,7 @@ class Button {
     strokeWeight(3);
     rect(position.x, position.y, w, h);
     fill(0);
-    textAlign(CENTER);
+    textAlign(CENTER, CENTER);
     text(text, position.x + w / 2, position.y + h / 2);
   }
 }
