@@ -59,9 +59,11 @@ void shoot(ArrayList<Enemy> list){
       enemy.damage(this);
       cooldown = true;
       
-      if (frameCount % 2 == 0) {
-        cooldown = false;
+      while (frameCount % 5 != 0) {
+        frameCount++;
       }
+      
+      cooldown = false;
     } else {
       break;
     }
