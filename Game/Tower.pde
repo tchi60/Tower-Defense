@@ -2,6 +2,7 @@ class Tower{
 float damage, rate, cost, range;
 String type;
 PVector location;
+ArrayList<Bullet> bullets;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
 this.damage = damage;
@@ -9,6 +10,7 @@ this.rate = rate;
 this.cost = cost;
 this.range = range;
 this.location = location;
+bullets = new ArrayList<Bullet>();
 }
 
 
@@ -32,11 +34,17 @@ PVector getLocation(){
 return location;
 }
 
+ArrayList<Bullet> getBullets(){
+  return bullets;
+}
+
 
 void shoot(Enemy[] list){
   for (Enemy enemy:list){
     if (withinRange(enemy) <= range*range){
       enemy.damage(this);
+      Bullet myBullet = new Bullet(this, enemy);
+      bullets.add(myBullet);
     }
   }
 }

@@ -34,8 +34,6 @@ void setup() {
   towerButtons();
   path = level.getPath();
   enemyStart = path[0];
-  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
-  enemies.add(newEnemy);
   towerButtons();
   gameover = false;
 }
@@ -74,8 +72,17 @@ void draw() {
     for (int i = 0; i < enemies.size(); i++){
       drawEnemy(enemies.get(i));
     }
-    if (frameCount % spawnRate == 0){
-      addEnemy();
+    for (int i = 0; i < towers.size(); i++){
+      Tower myTower = towers.get(i);
+      ArrayList<Bullet> myBullets = myTower.getBullets();
+      for (int k = 0; k < myBullets.size(); k++){
+        myBullets.get(i).updateBullet();
+      }
+    }
+    if (frameCount >= 100){
+      if (frameCount % spawnRate == 0){
+        addEnemy();
+      }
     }
     if (frameCount % 1 == 0){
       updateEnemy();
