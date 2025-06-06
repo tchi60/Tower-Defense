@@ -55,14 +55,15 @@ void valid() {
 
 void shoot(ArrayList<Enemy> list){
   for (Enemy enemy:list){
-    if (withinRange(enemy) <= range*range && !cooldown){
+    if (withinRange(enemy) <= range*range && cooldown == false){
       enemy.damage(this);
       cooldown = true;
       
-      int x = millis();
-      int goal = x + 1000;
-      
-      cooldown = false;
+      if (frameCount % 2 == 0) {
+        cooldown = false;
+      }
+    } else {
+      break;
     }
   }
 }

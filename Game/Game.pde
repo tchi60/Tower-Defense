@@ -155,18 +155,6 @@ void draw() {
   }
 }
 
-boolean timer(Tower tower) {
-  int start = millis();
-  int goal = (int) (start + tower.getRate() * 1000);
-  int temp = start;
-  
-  while (temp < goal) {    
-    temp += millis();
-  }
-  
-  return false;
-}
-
 boolean onPath(PVector location) {
   for (PVector tile : path) {    
     if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x - gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y - gridSize / 2) {
