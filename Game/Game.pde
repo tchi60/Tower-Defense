@@ -138,6 +138,11 @@ void draw() {
     textAlign(CENTER, CENTER);
     text("GAMEOVER", width / 2, height / 2);
   }
+  if (baseHealth <= 0){
+    gameOver = true;
+  }
+  if (gameOver){
+    
 }
 
 boolean onPath(PVector location) {
