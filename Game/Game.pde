@@ -1,3 +1,5 @@
+import org.guilhermesilveira.*;
+
 int numLevel; 
 float spawnRate;
 ArrayList<Enemy> enemies;
@@ -107,6 +109,7 @@ void draw() {
   
     for (Tower tower : towers) {
       tower.display();
+      tower.shoot(enemies);  
     }
   
     if (preview != null && mouseX >= uiWidth) {
@@ -179,7 +182,7 @@ void mouseClicked() {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
     if (!onTower(location) && !onPath(location)) {
-      towers.add(new Tower(10, 10, 10, 10, location));
+      towers.add(new Tower(100, 1, 100, 100, location));
       preview = null;
       placingTower = false;
     }  
@@ -212,6 +215,11 @@ void updateEnemy(){
     PVector currPath = path[i];
     for (int k = 0; k < enemies.size(); k++){
       Enemy currEnemy = enemies.get(k);
+      
+      if (currEnemy.getHealth() <= 0) {
+        enemies.remove(currEnemy);
+      }
+      
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
       if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
         PVector myDir = this.getNextDir(i, path);
