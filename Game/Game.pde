@@ -16,6 +16,8 @@ Button currentButton;
 boolean placingTower = false;
 boolean gameOver = false;
 
+BufferedReader reader;
+
 int gridSize = 50;
 int cols;
 int rows;
@@ -48,6 +50,14 @@ void setup() {
   path = level.getPath();
   enemyStart = path[0];
   addEnemy();
+  
+  reader = createReader("topScore.txt");
+  try {
+    topScore = Integer.parseInt(reader.readLine());
+  } catch (IOException e) {
+    e.printStackTrace();
+    topScore = 0;
+  }
 }
 
 void towerButtons() {
@@ -128,6 +138,7 @@ void draw() {
   
     if (topScoreShow) {
       fill(255, 255, 255, 200);
+      stroke(0);
       rect(width / 4, height / 4, width / 2, height / 2);
       fill(0);
       textAlign(CENTER, CENTER);
@@ -135,6 +146,7 @@ void draw() {
     }
   } else {
     fill(255, 255, 255, 200);
+    stroke(0);
     rect(width / 4, height / 4, width / 2, height / 2);
     fill(0);
     textAlign(CENTER, CENTER);
