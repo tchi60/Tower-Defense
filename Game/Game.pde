@@ -131,6 +131,9 @@ void draw() {
       textAlign(CENTER, CENTER);
       text("Top Score: " + topScore, width / 2, height / 2);
     }
+    if (baseHealth <= 0){
+    gameOver = true;
+  }
   } else {
     fill(255, 255, 255, 200);
     rect(width / 4, height / 4, width / 2, height / 2);
@@ -138,11 +141,6 @@ void draw() {
     textAlign(CENTER, CENTER);
     text("GAMEOVER", width / 2, height / 2);
   }
-  if (baseHealth <= 0){
-    gameOver = true;
-  }
-  if (gameOver){
-    
 }
 
 boolean onPath(PVector location) {

@@ -59,7 +59,7 @@ void valid() {
   colour = color(0, 255, 0);
 }
 
-void shoot(Enemy[] list){
+void shoot(ArrayList<Enemy> list){
   for (Enemy enemy:list){
     if (withinRange(enemy) <= range*range){
       enemy.damage(this);
