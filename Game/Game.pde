@@ -211,6 +211,11 @@ boolean onTower(PVector location) {
   return false;
 }
 
+boolean isEnoughMoney(float price){
+if ((this.money - price) < 0){
+return false;
+} else return true;
+}
 
 void mouseClicked() {
   PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
@@ -228,7 +233,9 @@ void mouseClicked() {
     recentButton = currentButton;
     if (f.equals("Tower")) {
       preview = (findTowerStats(location));
+      if (isEnoughMoney(preview.getCost())){
       placingTower = true;
+      }
     } 
     else if (f.equals("Top Score")) {
       topScoreShow = !topScoreShow;
