@@ -1,5 +1,3 @@
-import org.guilhermesilveira.*;
-
 int numLevel; 
 float spawnRate;
 ArrayList<Enemy> enemies;
@@ -155,6 +153,18 @@ void draw() {
     textAlign(CENTER, CENTER);
     text("GAMEOVER", width / 2, height / 2);
   }
+}
+
+boolean timer(Tower tower) {
+  int start = millis();
+  int goal = (int) (start + tower.getRate() * 1000);
+  int temp = start;
+  
+  while (temp < goal) {    
+    temp += millis();
+  }
+  
+  return false;
 }
 
 boolean onPath(PVector location) {
