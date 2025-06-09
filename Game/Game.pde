@@ -32,6 +32,8 @@ boolean muted = false;
 boolean paused = false;
 boolean started = false;
 
+int money = 500;
+
 void setup() {
   size(950, 600);
   
@@ -64,7 +66,7 @@ void setup() {
 
 void towerButtons() {
   for (int i = 0; i < 8; i++) {
-    PVector position = new PVector(0, i * gridSize);
+    PVector position = new PVector(0, i * gridSize + 3 * gridSize);
     
     Button button = new Button(position, gridSize * 3, gridSize, "Tower" + i, "Tower");
     buttons.add(button);
@@ -106,6 +108,10 @@ void draw() {
     }
     
     level.draw();
+    
+    fill(#C1F8FF);
+    text(towers.size(), 20, 40);
+    text(money, 20, 60);
     
     if (!started) {
       fill(255);
