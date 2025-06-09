@@ -83,6 +83,7 @@ void settingsButton() {
 }
 
 void startPage() {
+  paused = true;
   PVector position = new PVector(5 * gridSize, 5 * gridSize + 3 * gridSize);
   
   Button button = new Button(position, gridSize * 3, gridSize, "Start", "Start");
@@ -243,6 +244,7 @@ void mouseClicked() {
     } 
     else if (f.equals("Start")) {
       recentButton.setPosition(new PVector(10000, 10000));
+      paused = false;
     }
   }
 }
