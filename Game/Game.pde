@@ -30,6 +30,7 @@ int topScore = 0;
 boolean topScoreShow = false;
 boolean muted = false;
 boolean paused = false;
+boolean started = false;
 
 void setup() {
   size(950, 600);
@@ -84,9 +85,9 @@ void settingsButton() {
 
 void startPage() {
   paused = true;
-  PVector position = new PVector(5 * gridSize, 5 * gridSize + 3 * gridSize);
+  PVector position = new PVector(width / 2 - gridSize * 2.5, height / 2 - gridSize);
   
-  Button button = new Button(position, gridSize * 3, gridSize, "Start", "Start");
+  Button button = new Button(position, gridSize * 5, gridSize * 2, "Start", "Start");
   buttons.add(button);
 }
 
@@ -105,6 +106,12 @@ void draw() {
     }
     
     level.draw();
+    
+    if (!started) {
+      fill(255);
+      noStroke();
+      rect(0, 0, width, height);
+    }
   
     currentButton = null;
     for (Button button : buttons) {
@@ -112,6 +119,17 @@ void draw() {
       if (button.mouseOver()) {
         currentButton = button;
       }
+    }
+    
+    if (!started) {
+      fill(255);
+      noStroke();
+      rect(0, 0, width / 3, height);
+      
+      fill(0);
+      textSize(80);
+      textAlign(CENTER, CENTER);
+      text("Tower Defense", width / 2, height / 5);
     }
   
     for (Tower tower : towers) {
@@ -245,6 +263,7 @@ void mouseClicked() {
     else if (f.equals("Start")) {
       recentButton.setPosition(new PVector(10000, 10000));
       paused = false;
+      started = true;
     }
   }
 }

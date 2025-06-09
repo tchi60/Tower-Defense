@@ -39,6 +39,7 @@ class Button {
     rect(position.x, position.y, w, h);
     fill(0);
     textAlign(CENTER, CENTER);
+    textSize(15);
     text(text, position.x + w / 2, position.y + h / 2);
   }
 }
