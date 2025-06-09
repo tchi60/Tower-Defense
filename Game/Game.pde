@@ -272,6 +272,7 @@ void updateEnemy(){
       Enemy currEnemy = enemies.get(k);
       
       if (currEnemy.getHealth() <= 0) {
+        money += 50;
         enemies.remove(currEnemy);
       }
       
