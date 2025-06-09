@@ -175,12 +175,44 @@ boolean onTower(PVector location) {
   return false;
 }
 
+Tower findTowerStats(PVector place){
+  if (recentButton.getText().equals("Tower1")){
+    return new Tower(5,0.25,175,225,place);
+  }
+  
+  if (recentButton.getText().equals("Tower2")){
+    return new Tower(0.25,4,125,125,place);
+  }
+  
+  if (recentButton.getText().equals("Tower3")){
+    return new Tower(0.25,4,125,125,place);
+  }
+  
+  if (recentButton.getText().equals("Tower4")){
+    return new Tower(1,0.5,75,75,place);
+  }
+  
+  if (recentButton.getText().equals("Tower5")){
+    return new Tower(3,0.5,175,125,place);
+  }
+  
+  if (recentButton.getText().equals("Tower6")){
+    return new Tower(1,5,150,175,place);
+  }
+  
+  if (recentButton.getText().equals("Tower7")){
+    return new Tower(256,0.1,350,75,place);
+  }
+  
+  return new Tower(1,1,100,125,place);
+}
+
 void mouseClicked() {
   if (placingTower && currentButton == null && mouseX >= uiWidth) {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
     if (!onTower(location) && !onPath(location)) {
-      towers.add(new Tower(1000, 100, 100, 100, location));
+      towers.add(findTowerStats(location));
       preview = null;
       placingTower = false;
     }  
