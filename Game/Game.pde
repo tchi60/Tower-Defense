@@ -16,6 +16,8 @@ Button currentButton;
 boolean placingTower = false;
 boolean gameOver = false;
 
+BufferedReader reader;
+
 int gridSize = 50;
 int cols;
 int rows;
@@ -41,12 +43,20 @@ void setup() {
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
   spawnRate = 20;
-  enemySpeed = 5;
+  enemySpeed = 1;
   level.setup();
   towerButtons();
   settingsButton();
   path = level.getPath();
   enemyStart = path[0];
+  
+  reader = createReader("topScore.txt");
+  try {
+    topScore = Integer.parseInt(reader.readLine());
+  } catch (IOException e) {
+    e.printStackTrace();
+    topScore = 0;
+  }
 }
 
 void towerButtons() {
@@ -95,6 +105,7 @@ void draw() {
   
     for (Tower tower : towers) {
       tower.display();
+      tower.shoot(enemies);  
     }
   
     if (preview != null && mouseX >= uiWidth) {
@@ -126,6 +137,7 @@ void draw() {
   
     if (topScoreShow) {
       fill(255, 255, 255, 200);
+      stroke(0);
       rect(width / 4, height / 4, width / 2, height / 2);
       fill(0);
       textAlign(CENTER, CENTER);
@@ -136,6 +148,7 @@ void draw() {
   }
   } else {
     fill(255, 255, 255, 200);
+    stroke(0);
     rect(width / 4, height / 4, width / 2, height / 2);
     fill(0);
     textAlign(CENTER, CENTER);
@@ -168,7 +181,7 @@ void mouseClicked() {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
     if (!onTower(location) && !onPath(location)) {
-      towers.add(new Tower(10, 10, 10, 10, location));
+      towers.add(new Tower(100, 100, 100, 100, location));
       preview = null;
       placingTower = false;
     }  
@@ -201,6 +214,11 @@ void updateEnemy(){
     PVector currPath = path[i];
     for (int k = 0; k < enemies.size(); k++){
       Enemy currEnemy = enemies.get(k);
+      
+      if (currEnemy.getHealth() <= 0) {
+        enemies.remove(currEnemy);
+      }
+      
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
       if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
         PVector myDir = currEnemy.getNextDir(i, path);
