@@ -42,7 +42,7 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
-  spawnRate = 20;
+  spawnRate = 50;
   enemySpeed = 1;
   level.setup();
   towerButtons();
