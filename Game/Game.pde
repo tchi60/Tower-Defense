@@ -13,6 +13,7 @@ Level level;
 PVector[] path;
 ArrayList<Button> buttons;
 Button currentButton;
+Button recentButton;
 boolean placingTower = false;
 boolean gameOver = false;
 
@@ -49,7 +50,7 @@ void setup() {
   settingsButton();
   path = level.getPath();
   enemyStart = path[0];
-  addEnemy();
+  startPage();
   
   reader = createReader("topScore.txt");
   try {
@@ -62,7 +63,7 @@ void setup() {
 
 void towerButtons() {
   for (int i = 0; i < 8; i++) {
-    PVector position = new PVector(0, i * gridSize + 3 * gridSize);
+    PVector position = new PVector(0, i * gridSize);
     
     Button button = new Button(position, gridSize * 3, gridSize, "Tower" + i, "Tower");
     buttons.add(button);
@@ -79,6 +80,13 @@ void settingsButton() {
     Button button = new Button(position, gridSize, gridSize, types[i], types[i]);
     buttons.add(button);
   }
+}
+
+void startPage() {
+  PVector position = new PVector(5 * gridSize, 5 * gridSize + 3 * gridSize);
+  
+  Button button = new Button(position, gridSize * 3, gridSize, "Start", "Start");
+  buttons.add(button);
 }
 
 void draw() {
@@ -218,6 +226,7 @@ void mouseClicked() {
     }  
   } else if (currentButton != null) {
     String f = currentButton.function;
+    recentButton = currentButton;
     
     if (f.equals("Tower")) {
       preview = new Tower(10, 10, 10, 10, new PVector(0, 0));
@@ -231,6 +240,9 @@ void mouseClicked() {
     } 
     else if (f.equals("Pause")) {
       paused = !paused;
+    } 
+    else if (f.equals("Start")) {
+      recentButton.setPosition(new PVector(10000, 10000));
     }
   }
 }
