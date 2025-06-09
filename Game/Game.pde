@@ -180,7 +180,7 @@ void mouseClicked() {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
     if (!onTower(location) && !onPath(location)) {
-      towers.add(new Tower(100, 1, 100, 100, location));
+      towers.add(new Tower(100, 100, 100, 100, location));
       preview = null;
       placingTower = false;
     }  
@@ -204,7 +204,7 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
+  Enemy newEnemy = new Enemy(300, 0.9, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
 }
 

@@ -4,7 +4,7 @@ private float damage, rate, cost, range;
 private String type;
 private PVector location;
 private color colour;
-private boolean cooldown;
+private int lastFrameShot;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
 this.damage = damage;
@@ -12,7 +12,7 @@ this.rate = rate;
 this.cost = cost;
 this.range = range;
 this.location = location;
-cooldown = false;
+lastFrameShot = 0;
 colour = color(150, 150, 200);
 }
 
@@ -55,16 +55,8 @@ void valid() {
 
 void shoot(ArrayList<Enemy> list){
   for (Enemy enemy:list){
-    if (withinRange(enemy) <= range*range && cooldown == false){
+    if (withinRange(enemy) <= range*range && lastFrameShot == frameCount % rate){
       enemy.damage(this);
-      cooldown = true;
-      
-      while (frameCount % 5 != 0) {
-        frameCount++;
-      }
-      
-      cooldown = false;
-    } else {
       break;
     }
   }
