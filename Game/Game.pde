@@ -128,14 +128,6 @@ void draw() {
       preview.display();
     }
    
-
-    for (Button button : buttons) {
-    button.display();
-    if (button.mouseOver()) {
-      currentButton = button;
-    }
-  }
-
     for (Enemy enemy : enemies) {
       drawEnemy(enemy);
     }
@@ -278,6 +270,11 @@ void updateEnemy(){
     PVector currPath = path[i];
     for (int k = 0; k < enemies.size(); k++){
       Enemy currEnemy = enemies.get(k);
+      
+      if (currEnemy.getHealth() <= 0) {
+        enemies.remove(currEnemy);
+      }
+      
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
       if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
         PVector myDir = this.getNextDir(i, path);
