@@ -49,8 +49,7 @@ void setup() {
   settingsButton();
   path = level.getPath();
   enemyStart = path[0];
-  addEnemy();
-  
+
    reader = createReader("topScore.txt");
   try {
     topScore = Integer.parseInt(reader.readLine());
@@ -110,9 +109,10 @@ void draw() {
   text(towers.size(), 20, 40);
   text(money, 20, 60);
 
-   for (Tower t : towers) {
-     t.display();
-   }
+    for (Tower tower : towers) {
+      tower.display();
+      tower.shoot(enemies);  
+    }
   
     if (preview != null && mouseX >= uiWidth) {
       PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
@@ -127,6 +127,7 @@ void draw() {
       
       preview.display();
     }
+   
 
     for (Button button : buttons) {
     button.display();
@@ -134,19 +135,21 @@ void draw() {
       currentButton = button;
     }
   }
+
     for (Enemy enemy : enemies) {
       drawEnemy(enemy);
     }
   
     if (paused == false) {
-      if (frameCount % spawnRate == 0) {
+      if (frameCount % spawnRate == 0 && frameCount >= 100) {
         addEnemy();
       }
-      if (frameCount % enemySpeed == 0) {
+      if (frameCount % 1 == 0) {
         updateEnemy();
       }
     }
   
+
     if (topScoreShow) {
       fill(255, 255, 255, 200);
       stroke(0);
@@ -157,7 +160,7 @@ void draw() {
     }
     if (baseHealth <= 0){
     gameOver = true;
-    }
+  }
   } else {
     fill(255, 255, 255, 200);
     stroke(0);
