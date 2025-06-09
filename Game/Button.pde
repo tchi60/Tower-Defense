@@ -14,8 +14,12 @@ class Button {
     c = color(255);
   }
   
-  String getText(){
-  return text;
+  String getText() {
+    return text;
+  }
+  
+  void setPosition(PVector p) {
+    position = p; 
   }
   
   boolean mouseOver() {
@@ -28,13 +32,14 @@ class Button {
     return false;
   }
   
-  void display() {
+  void draw() {
     stroke(0);
     fill(c);
     strokeWeight(3);
     rect(position.x, position.y, w, h);
     fill(0);
     textAlign(CENTER, CENTER);
+    textSize(15);
     text(text, position.x + w / 2, position.y + h / 2);
   }
 }
