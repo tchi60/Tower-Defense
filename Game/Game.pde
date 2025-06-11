@@ -1,4 +1,3 @@
-PFont title;
 int numLevel; 
 float spawnRate;
 ArrayList<Enemy> enemies;
@@ -52,7 +51,6 @@ int kills = 0;
 
 void setup() {
   size(950, 600);
-  title = createFont("NotoSansMonoCJKjp-Bold-20.vlw",128);
   cols = (width - uiWidth) / gridSize;
   rows = height / gridSize;
   numPaths = 50;
@@ -149,7 +147,6 @@ void draw() {
       fill(255, 215, 0); 
       textSize(80);
       textAlign(CENTER, CENTER);
-      textFont(title);
       text("TOWER DEFENSE", width/2, height/3);
     }
   
