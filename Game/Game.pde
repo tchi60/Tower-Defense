@@ -50,6 +50,7 @@ void setup() {
   settingsButton();
   path = level.getPath();
   enemyStart = path[0];
+  startPage();
 
    reader = createReader("topScore.txt");
   try {
