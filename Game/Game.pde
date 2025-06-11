@@ -51,7 +51,6 @@ int kills = 0;
 
 void setup() {
   size(950, 600);
-  
   cols = (width - uiWidth) / gridSize;
   rows = height / gridSize;
   numPaths = 50;
@@ -106,9 +105,9 @@ void settingsButton() {
 
 void startPage() {
   paused = true;
-  PVector position = new PVector(width / 2 - gridSize * 2.5, height / 2 - gridSize);
+  PVector position = new PVector(width/2 - gridSize*2.5, height/2 + gridSize/2 - 50);
   
-  Button button = new Button(position, gridSize * 5, gridSize * 2, "Start", "Start");
+  Button button = new Button(position, gridSize*5, gridSize*2, "Start", "Start");
   buttons.add(button);
 }
 
@@ -128,40 +127,40 @@ void draw() {
     
     level.draw();
     
-    fill(255, 255, 255, 200);
-    stroke(0);
-    rect(0, 0, gridSize * 3, gridSize * 5);
-    fill(0);
-    textAlign(LEFT, CENTER);
-    textSize(20);
-    text("Towers: " + towers.size(), 10, 30);
-    text("Money: " + money, 10, 60);
-    text("Kills: " + kills, 10, 90);
+  if (started) {
+      fill(255, 255, 255, 200);
+      stroke(0);
+      rect(0, 0, gridSize * 3, gridSize * 5);
+      fill(0);
+      textAlign(LEFT, CENTER);
+      textSize(20);
+      text("Towers: " + towers.size(), 10, 30);
+      text("Money: " + money, 10, 60);
+      text("Kills: " + kills, 10, 90);
+    }
     
     if (!started) {
-      fill(255);
+     fill(0, 0, 0, 150);
       noStroke();
       rect(0, 0, width, height);
+
+      fill(255, 215, 0); 
+      textSize(80);
+      textAlign(CENTER, CENTER);
+      text("TOWER DEFENSE", width/2, height/3);
     }
   
     currentButton = null;
     for (Button button : buttons) {
-      button.draw();
-      if (button.mouseOver()) {
-        currentButton = button;
+      if (started || button.function.equals("Start")) {
+        button.draw();
+        if (button.mouseOver()) {
+          currentButton = button;
+        }
       }
     }
     
-    if (!started) {
-      fill(255);
-      noStroke();
-      rect(0, 0, width / 3, height);
-      
-      fill(0);
-      textSize(80);
-      textAlign(CENTER, CENTER);
-      text("Tower Defense", width / 2, height / 5);
-    }
+
   
     for (Tower tower : towers) {
       tower.display();
