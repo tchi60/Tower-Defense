@@ -6,7 +6,7 @@ ArrayList<Bullet> bullets;
 Tower preview;
 int numPaths;
 int baseHealth;
-String[] levelTypes = {"a", "b", "c", "d", "e", "f"};
+String[] levelTypes = {"fire", "air", "water", "earth", "metal", "noir"};
 float enemySpeed;
 int levelType;
 PVector enemyStart;
