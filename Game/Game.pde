@@ -29,10 +29,10 @@ int uiWidth = gridSize * uiCols;
 
 int money = 500;
 int topScore = 0;
-boolean started = false;
 boolean topScoreShow = false;
 boolean muted = false;
 boolean paused = false;
+boolean started = false;
 
 void setup() {
   size(950, 600);
@@ -106,6 +106,24 @@ void draw() {
     
     level.draw();
     
+    fill(#C1F8FF);
+    text(towers.size(), 20, 40);
+    text(money, 20, 60);
+    
+    if (!started) {
+      fill(255);
+      noStroke();
+      rect(0, 0, width, height);
+    }
+  
+    currentButton = null;
+    for (Button button : buttons) {
+      button.draw();
+      if (button.mouseOver()) {
+        currentButton = button;
+      }
+    }
+    
     if (!started) {
       fill(255);
       noStroke();
@@ -130,11 +148,7 @@ void draw() {
       textAlign(CENTER, CENTER);
       text("Tower Defense", width / 2, height / 5);
     }
-
-  fill(#C1F8FF);
-  text(towers.size(), 20, 40);
-  text(money, 20, 60);
-  
+    
     for (Tower tower : towers) {
       tower.display();
       tower.shoot(enemies);  
@@ -168,8 +182,7 @@ void draw() {
       }
     }
   
-
-    if (topScoreShow) {
+  if (topScoreShow) {
       fill(255, 255, 255, 200);
       stroke(0);
       rect(width / 4, height / 4, width / 2, height / 2);
@@ -177,9 +190,6 @@ void draw() {
       textAlign(CENTER, CENTER);
       text("Top Score: " + topScore, width / 2, height / 2);
     }
-    if (baseHealth <= 0){
-    gameOver = true;
-  }
   } else {
     fill(255, 255, 255, 200);
     stroke(0);
