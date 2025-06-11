@@ -323,7 +323,7 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(1, 1, levelTypes[levelType], enemyStart);
+  Enemy newEnemy = new Enemy(kills / 25 + 1, 1, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
 }
 
