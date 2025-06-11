@@ -6,7 +6,6 @@ private String type;
 private PVector location;
 ArrayList<Bullet> bullets;
 private color colour;
-private int lastFrameShot;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
 this.damage = damage;
@@ -14,8 +13,6 @@ this.rate = rate;
 this.cost = cost;
 this.range = range;
 this.location = location;
-bullets = new ArrayList<Bullet>();
-lastFrameShot = 0;
 colour = color(150, 150, 200);
 }
 
@@ -63,18 +60,18 @@ void valid() {
 
 void shoot(ArrayList<Enemy> list){
   for (Enemy enemy:list){
-    if (withinRange(enemy) <= range*range && lastFrameShot == frameCount % rate){
-      enemy.damage(this);
-      Bullet myBullet = new Bullet(this, enemy);
-      bullets.add(myBullet);
+    if (withinRange(enemy) <= range*range && 0 == frameCount % (rate * 30)){
+      Bullet b = new Bullet(this, enemy);
+      bullets.add(b);
+      
       break;
     }
   }
 }
 
 float withinRange(Enemy enemy){
-    float x = location.x - enemy.getX();
-    float y = location.y - enemy.getY();
+    float x = location.x + gridSize / 2 - enemy.getX();
+    float y = location.y + gridSize / 2 - enemy.getY();
     return x*x + y*y;
 }
 

@@ -18,10 +18,6 @@ public class Enemy{
     dir = new PVector(0,0);
     enemySpeed = mySpeed;
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   public float getHealth(){
     return health;
   }
@@ -44,10 +40,7 @@ public class Enemy{
       isAlive = false;
     }
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   public void setPosition(PVector x){
     position = x;
   }
@@ -57,8 +50,7 @@ public class Enemy{
   public void setDir(PVector x){
     dir = x;
   }
-<<<<<<< HEAD
-=======
+
   public PVector getNextDir(int i, PVector[] paths){
   PVector curr = paths[i];
   PVector next = paths[i + 1];
@@ -82,5 +74,4 @@ public class Enemy{
   return out;
 }
 
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
 }

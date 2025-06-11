@@ -14,6 +14,14 @@ class Button {
     c = color(255);
   }
   
+  String getText() {
+    return text;
+  }
+  
+  void setPosition(PVector p) {
+    position = p; 
+  }
+  
   boolean mouseOver() {
     if (mouseX >= position.x && mouseY >= position.y && mouseX <= position.x + w && mouseY <= position.y + h) {
       c = color(200);
@@ -31,6 +39,7 @@ class Button {
     rect(position.x, position.y, w, h);
     fill(0);
     textAlign(CENTER, CENTER);
+    textSize(15);
     text(text, position.x + w / 2, position.y + h / 2);
   }
 }

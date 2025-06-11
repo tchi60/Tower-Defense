@@ -2,28 +2,42 @@ int numLevel;
 float spawnRate;
 ArrayList<Enemy> enemies;
 ArrayList<Tower> towers;
+ArrayList<Bullet> bullets;
 Tower preview;
 int numPaths;
 int baseHealth;
-String[] levelTypes = {"a", "b", "c", "d", "e", "f"};
 float enemySpeed;
-int levelType;
 PVector enemyStart;
 Level level;
 PVector[] path;
 ArrayList<Button> buttons;
 Button currentButton;
+Button recentButton;
 boolean placingTower = false;
 boolean gameOver = false;
 
+String[] levelTypes = {"fire", "air", "water", "earth", "metal", "noir"};
+int levelType;
+
+color[][] levelPalettes = {
+  { color(255, 90, 50), color(235, 220, 210), color(255, 240, 230) },
+  { color(160, 230, 220), color(210, 235, 230), color(230, 255, 250) },
+  { color(50, 150, 220), color(210, 230, 235), color(230, 250, 255) },
+  { color(130, 100, 10), color(230, 220, 200), color(250, 240, 220) },
+  { color(180, 190, 190), color(220, 220, 220), color(240, 240, 240) },
+  { color(40, 60, 80), color(180, 190, 200), color(200, 210, 220) }
+};
+
+color pathColor, gridColor, backgroundColor;
+
 BufferedReader reader;
+PrintWriter file;
 
 int gridSize = 50;
 int cols;
 int rows;
 
-<<<<<<< HEAD
-=======
+
 int uiCols = 3;
 int uiWidth = gridSize * uiCols;
 
@@ -31,45 +45,47 @@ int topScore = 0;
 boolean topScoreShow = false;
 boolean muted = false;
 boolean paused = false;
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
+
+boolean started = false;
+
+int money = 500;
+int kills = 0;
 
 void setup() {
   size(950, 600);
-  
   cols = (width - uiWidth) / gridSize;
   rows = height / gridSize;
   numPaths = 50;
   levelType = (int)(Math.random() * levelTypes.length);
-  level = new Level(numPaths, levelTypes[levelType]);
+  pathColor = levelPalettes[levelType][0];
+  gridColor = levelPalettes[levelType][1];
+  backgroundColor = levelPalettes[levelType][2];
+  level = new Level(numPaths, levelPalettes[levelType]);
   baseHealth = 100;
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
-<<<<<<< HEAD
+
   spawnRate = 100;
-=======
-  spawnRate = 50;
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
+
+  bullets = new ArrayList<Bullet>();
+
   enemySpeed = 1;
   level.setup();
   towerButtons();
   settingsButton();
   path = level.getPath();
   enemyStart = path[0];
-<<<<<<< HEAD
-  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
-  enemies.add(newEnemy);
-  towerButtons();
-=======
+
+  startPage();
   
   reader = createReader("topScore.txt");
-  try {
+  try {   
     topScore = Integer.parseInt(reader.readLine());
   } catch (IOException e) {
     e.printStackTrace();
     topScore = 0;
   }
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
 }
 
 void towerButtons() {
@@ -93,39 +109,19 @@ void settingsButton() {
   }
 }
 
+void startPage() {
+  paused = true;
+  PVector position = new PVector(width/2 - gridSize*2.5, height/2 + gridSize/2 - 50);
+  
+  Button button = new Button(position, gridSize*5, gridSize*2, "Start", "Start");
+  buttons.add(button);
+}
+
 void draw() {
-<<<<<<< HEAD
-  background(0);
-  stroke(30);
-  strokeWeight(2);
-  noFill();
-
-  for (int y = 0; y < rows; y++) {
-    for (int x = 0; x < cols; x++) {
-      rect(x * gridSize, y * gridSize, gridSize, gridSize);
-    }
-  }
-
-  level.draw();
-  for (int i = 0; i < enemies.size(); i++){
-    drawEnemy(enemies.get(i));
-  }
-  for (Button button : buttons) {
-    button.draw();
+  if (!gameOver) {
+    background(backgroundColor);
     
-    if (button.mouseOver()) {
-      currentButton = button;
-    }
-  }
-  if (frameCount % spawnRate == 0){
-    addEnemy();
-  }
-  if (frameCount % enemySpeed == 0){
-    updateEnemy();
-=======
-  if (!gameOver){
-    background(0);
-    stroke(30);
+    stroke(gridColor);
     strokeWeight(2);
     noFill();
     
@@ -136,18 +132,47 @@ void draw() {
     }
     
     level.draw();
+    
+  if (started) {
+      fill(255, 255, 255, 200);
+      stroke(0);
+      rect(0, 0, gridSize * 3, gridSize * 5);
+      fill(0);
+      textAlign(LEFT, CENTER);
+      textSize(20);
+      text("Towers: " + towers.size(), 10, 30);
+      text("Money: " + money, 10, 60);
+      text("Kills: " + kills, 10, 90);
+    }
+    
+    if (!started) {
+     fill(0, 0, 0, 150);
+      noStroke();
+      rect(0, 0, width, height);
+
+      fill(255, 215, 0); 
+      textSize(80);
+      textAlign(CENTER, CENTER);
+      text("TOWER DEFENSE", width/2, height/3);
+    }
   
     currentButton = null;
     for (Button button : buttons) {
-      button.draw();
-      if (button.mouseOver()) {
-        currentButton = button;
+      if (started || button.function.equals("Start")) {
+        button.draw();
+        if (button.mouseOver()) {
+          currentButton = button;
+        }
       }
     }
+    
+
   
     for (Tower tower : towers) {
       tower.display();
-      tower.shoot(enemies);  
+      if (!paused) {
+        tower.shoot(enemies);  
+      }
     }
   
     if (preview != null && mouseX >= uiWidth) {
@@ -155,17 +180,34 @@ void draw() {
       
       preview.setLocation(location);
       
-      if (onPath(location) || onTower(location)) {
+      if (onPath(location) || onTower(location) || money < preview.getCost()) {
         preview.invalid();
+        fill(255, 0, 0, 50);
+        stroke(255, 0, 0);
       } else {
         preview.valid();
+        fill(0, 255, 0, 50);
+        stroke(0, 255, 0);
       }
+      
+      circle(mouseX / gridSize * gridSize + gridSize / 2, mouseY / gridSize * gridSize + gridSize / 2, preview.getRange() * 1.75);
       
       preview.display();
     }
     
     for (Enemy enemy : enemies) {
       drawEnemy(enemy);
+    }
+    
+    if (!paused) {
+      for (Bullet b : bullets) {
+        b.updateBullet();
+        
+        if (b.hit()) {
+          bullets.remove(b);
+          break;
+        }
+      }
     }
   
     if (paused == false) {
@@ -218,20 +260,57 @@ boolean onTower(PVector location) {
   return false;
 }
 
+Tower findTowerStats(PVector place){
+  if (recentButton.getText().equals("Tower1")){
+    return new Tower(5,4,175,225,place);
+  }
+  
+  if (recentButton.getText().equals("Tower2")){
+    return new Tower(0.25,.25,125,175,place);
+  }
+  
+  if (recentButton.getText().equals("Tower3")){
+    return new Tower(.2,0.1,250,175,place);
+  }
+  
+  if (recentButton.getText().equals("Tower4")){
+    return new Tower(1,2.5,75,75,place);
+  }
+  
+  if (recentButton.getText().equals("Tower5")){
+    return new Tower(3,2,175,125,place);
+  }
+  
+  if (recentButton.getText().equals("Tower6")){
+    return new Tower(1,.5,150,175,place);
+  }
+  
+  if (recentButton.getText().equals("Tower7")){
+    return new Tower(100,10,350,75,place);
+  }
+  
+  return new Tower(1,1,100,125,place);
+}
+
 void mouseClicked() {
   if (placingTower && currentButton == null && mouseX >= uiWidth) {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
-    if (!onTower(location) && !onPath(location)) {
-      towers.add(new Tower(100, 100, 100, 100, location));
-      preview = null;
-      placingTower = false;
-    }  
+    if (!onTower(location) && !onPath(location) && !(money < findTowerStats(location).getCost())) {
+      Tower toAdd = findTowerStats(location);
+      
+      towers.add(toAdd);
+      money -= toAdd.getCost();
+    }
+    
+    preview = null;
+    placingTower = false;
   } else if (currentButton != null) {
     String f = currentButton.function;
+    recentButton = currentButton;
     
     if (f.equals("Tower")) {
-      preview = new Tower(10, 10, 10, 10, new PVector(0, 0));
+      preview = findTowerStats(new PVector(0, 0));
       placingTower = true;
     } 
     else if (f.equals("Top Score")) {
@@ -242,17 +321,17 @@ void mouseClicked() {
     } 
     else if (f.equals("Pause")) {
       paused = !paused;
+    } 
+    else if (f.equals("Start")) {
+      recentButton.setPosition(new PVector(10000, 10000));
+      paused = false;
+      started = true;
     }
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   }
 }
 
 void addEnemy(){
-<<<<<<< HEAD
-  Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
-=======
   Enemy newEnemy = new Enemy(100, 0.9, enemySpeed, levelTypes[levelType], enemyStart);
->>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   enemies.add(newEnemy);
 }
 
@@ -264,6 +343,17 @@ void updateEnemy(){
       
       if (currEnemy.getHealth() <= 0) {
         enemies.remove(currEnemy);
+        money += 25;
+        kills++;
+        
+        if (kills > topScore) {
+          topScore = kills;
+         
+          file = createWriter("topScore.txt");
+          file.print(topScore);
+          file.flush();
+          file.close();
+        }
       }
       
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
