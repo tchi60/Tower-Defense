@@ -4,6 +4,7 @@ class Tower{
 private float damage, rate, cost, range;
 private String type;
 private PVector location;
+ArrayList<Bullet> bullets;
 private color colour;
 
 Tower(float damage, float rate, float cost, float range, PVector location){
@@ -12,6 +13,7 @@ this.rate = rate;
 this.cost = cost;
 this.range = range;
 this.location = location;
+bullets = new ArrayList<Bullet>();
 colour = color(150, 150, 200);
 }
 
