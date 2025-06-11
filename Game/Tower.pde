@@ -53,16 +53,18 @@ void valid() {
 
 void shoot(ArrayList<Enemy> list){
   for (Enemy enemy:list){
-    if (withinRange(enemy) <= range*range && 0 == frameCount % rate){
-      enemy.damage(this);
+    if (withinRange(enemy) <= range*range && 0 == frameCount % (rate * 30)){
+      Bullet b = new Bullet(this, enemy);
+      bullets.add(b);
+      
       break;
     }
   }
 }
 
 float withinRange(Enemy enemy){
-    float x = location.x - enemy.getX();
-    float y = location.y - enemy.getY();
+    float x = location.x + gridSize / 2 - enemy.getX();
+    float y = location.y + gridSize / 2 - enemy.getY();
     return x*x + y*y;
 }
 

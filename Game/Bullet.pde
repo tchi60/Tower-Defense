@@ -3,7 +3,7 @@ public class Bullet{
   private Enemy target;
   private Tower source;
   private PVector dir;
-  private float speed = 15;
+  private float speed = 10;
   private float dx;
   private float dy;
   private float mag;
@@ -11,8 +11,9 @@ public class Bullet{
   public Bullet(Tower mySource, Enemy myTarget){
     source = mySource;
     target = myTarget;
-    dx = source.getLocation().x - target.getX();
-    dy = source.getLocation().y - target.getY();
+    location = source.getLocation().copy();
+    dx = target.getX() - source.getLocation().x;
+    dy = target.getY() - source.getLocation().y;
     mag = (float)(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy,2)));
     float scale = mag / speed;
     dx /= scale;
@@ -27,9 +28,21 @@ public class Bullet{
     return target;
   }
   
+  boolean hit(){
+    float d = dist(location.x, location.y, target.getX(), target.getY());
+    
+    if (d < 20 || target.getHealth() <= 0) {
+      target.damage(source);
+    
+      return true;
+    }
+    
+    return false;
+  }
+  
   public void updateBullet(){
-    dx = source.getLocation().x - target.getX();
-    dy = source.getLocation().y - target.getY();
+    dx = target.getX() - source.getLocation().x;
+    dy = target.getY() - source.getLocation().y;
     mag = (float)(Math.sqrt(Math.pow(dx, 2) + Math.pow(dy,2)));
     float scale = mag / speed;
     dx /= scale;

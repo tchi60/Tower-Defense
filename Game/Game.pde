@@ -2,6 +2,7 @@ int numLevel;
 float spawnRate;
 ArrayList<Enemy> enemies;
 ArrayList<Tower> towers;
+ArrayList<Bullet> bullets;
 Tower preview;
 int numPaths;
 int baseHealth;
@@ -46,6 +47,7 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
+  bullets = new ArrayList<Bullet>();
   spawnRate = 50;
   enemySpeed = 5;
   level.setup();
@@ -140,7 +142,9 @@ void draw() {
   
     for (Tower tower : towers) {
       tower.display();
-      tower.shoot(enemies);  
+      if (!paused) {
+        tower.shoot(enemies);  
+      }
     }
   
     if (preview != null && mouseX >= uiWidth) {
@@ -148,17 +152,34 @@ void draw() {
       
       preview.setLocation(location);
       
-      if (onPath(location) || onTower(location)) {
+      if (onPath(location) || onTower(location) || money < preview.getCost()) {
         preview.invalid();
+        fill(255, 0, 0, 50);
+        stroke(255, 0, 0);
       } else {
         preview.valid();
+        fill(0, 255, 0, 50);
+        stroke(0, 255, 0);
       }
+      
+      circle(mouseX / gridSize * gridSize + gridSize / 2, mouseY / gridSize * gridSize + gridSize / 2, preview.getRange() * 1.75);
       
       preview.display();
     }
     
     for (Enemy enemy : enemies) {
       drawEnemy(enemy);
+    }
+    
+    if (!paused) {
+      for (Bullet b : bullets) {
+        b.updateBullet();
+        
+        if (b.hit()) {
+          bullets.remove(b);
+          break;
+        }
+      }
     }
   
     if (paused == false) {
@@ -210,31 +231,31 @@ boolean onTower(PVector location) {
 
 Tower findTowerStats(PVector place){
   if (recentButton.getText().equals("Tower1")){
-    return new Tower(5,0.25,175,225,place);
+    return new Tower(5,4,175,225,place);
   }
   
   if (recentButton.getText().equals("Tower2")){
-    return new Tower(0.25,4,125,125,place);
+    return new Tower(0.25,.25,125,175,place);
   }
   
   if (recentButton.getText().equals("Tower3")){
-    return new Tower(0.25,4,125,125,place);
+    return new Tower(.2,0.1,250,175,place);
   }
   
   if (recentButton.getText().equals("Tower4")){
-    return new Tower(1,0.5,75,75,place);
+    return new Tower(1,2.5,75,75,place);
   }
   
   if (recentButton.getText().equals("Tower5")){
-    return new Tower(3,0.5,175,125,place);
+    return new Tower(3,2,175,125,place);
   }
   
   if (recentButton.getText().equals("Tower6")){
-    return new Tower(1,5,150,175,place);
+    return new Tower(1,.5,150,175,place);
   }
   
   if (recentButton.getText().equals("Tower7")){
-    return new Tower(256,0.1,350,75,place);
+    return new Tower(100,10,350,75,place);
   }
   
   return new Tower(1,1,100,125,place);
@@ -244,17 +265,21 @@ void mouseClicked() {
   if (placingTower && currentButton == null && mouseX >= uiWidth) {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
-    if (!onTower(location) && !onPath(location)) {
-      towers.add(findTowerStats(location));
-      preview = null;
-      placingTower = false;
-    }  
+    if (!onTower(location) && !onPath(location) && !(money < findTowerStats(location).getCost())) {
+      Tower toAdd = findTowerStats(location);
+      
+      towers.add(toAdd);
+      money -= toAdd.getCost();
+    }
+    
+    preview = null;
+    placingTower = false;
   } else if (currentButton != null) {
     String f = currentButton.function;
     recentButton = currentButton;
     
     if (f.equals("Tower")) {
-      preview = new Tower(10, 10, 10, 10, new PVector(0, 0));
+      preview = findTowerStats(new PVector(0, 0));
       placingTower = true;
     } 
     else if (f.equals("Top Score")) {
@@ -287,6 +312,7 @@ void updateEnemy(){
       
       if (currEnemy.getHealth() <= 0) {
         enemies.remove(currEnemy);
+        money += 25;
       }
       
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
