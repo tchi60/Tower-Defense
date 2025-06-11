@@ -331,7 +331,7 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(100, 0.9, enemySpeed, levelTypes[levelType], enemyStart);
+  Enemy newEnemy = new Enemy(5, 1, enemySpeed, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
 }
 
