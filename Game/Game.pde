@@ -36,7 +36,6 @@ boolean started = false;
 
 void setup() {
   size(950, 600);
-  
   cols = (width - uiWidth) / gridSize;
   rows = height / gridSize;
   numPaths = 50;
@@ -107,47 +106,31 @@ void draw() {
     
     level.draw();
     
-    fill(#C1F8FF);
-    text(towers.size(), 20, 40);
-    text(money, 20, 60);
+if (started) {
+      fill(#C1F8FF);
+      text(towers.size(), 20, 40);
+      text(money, 20, 60);
+    }
     
     if (!started) {
-      fill(255);
+      fill(0, 150);
       noStroke();
       rect(0, 0, width, height);
-    }
-  
-    currentButton = null;
-    for (Button button : buttons) {
-      button.draw();
-      if (button.mouseOver()) {
-        currentButton = button;
-      }
-    }
-    
-    if (!started) {
-      fill(255);
-      noStroke();
-      rect(0, 0, width, height);
-    }
-  
-    currentButton = null;
-    for (Button button : buttons) {
-      button.draw();
-      if (button.mouseOver()) {
-        currentButton = button;
-      }
-    }
-    
-    if (!started) {
-      fill(255);
-      noStroke();
-      rect(0, 0, width / 3, height);
-      
-      fill(0);
+     
+      fill(255, 175, 55);
       textSize(80);
       textAlign(CENTER, CENTER);
-      text("Tower Defense", width / 2, height / 5);
+      text("TOWER DEFENSE", width / 2, height / 3); // Moved title up
+    }
+  
+    currentButton = null;
+    for (Button button : buttons) {
+      if (started || button.function.equals("Start")) {
+        button.draw();
+      if (button.mouseOver()) {
+        currentButton = button;
+      }
+     }
     }
     
     for (Tower tower : towers) {
