@@ -2,6 +2,7 @@ int numLevel;
 float spawnRate;
 ArrayList<Enemy> enemies;
 ArrayList<Tower> towers;
+Tower preview;
 int numPaths;
 int baseHealth;
 String[] levelTypes = {"a", "b", "c", "d", "e", "f"};
@@ -12,14 +13,31 @@ Level level;
 PVector[] path;
 ArrayList<Button> buttons;
 Button currentButton;
+boolean placingTower = false;
+boolean gameOver = false;
+
+BufferedReader reader;
 
 int gridSize = 50;
-int cols = width / gridSize;
-int rows = height / gridSize;
+int cols;
+int rows;
 
+<<<<<<< HEAD
+=======
+int uiCols = 3;
+int uiWidth = gridSize * uiCols;
+
+int topScore = 0;
+boolean topScoreShow = false;
+boolean muted = false;
+boolean paused = false;
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
 
 void setup() {
-  size(800, 600);
+  size(950, 600);
+  
+  cols = (width - uiWidth) / gridSize;
+  rows = height / gridSize;
   numPaths = 50;
   levelType = (int)(Math.random() * levelTypes.length);
   level = new Level(numPaths, levelTypes[levelType]);
@@ -27,26 +45,56 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
+<<<<<<< HEAD
   spawnRate = 100;
+=======
+  spawnRate = 50;
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   enemySpeed = 1;
   level.setup();
   towerButtons();
+  settingsButton();
   path = level.getPath();
   enemyStart = path[0];
+<<<<<<< HEAD
   Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
   towerButtons();
+=======
+  
+  reader = createReader("topScore.txt");
+  try {
+    topScore = Integer.parseInt(reader.readLine());
+  } catch (IOException e) {
+    e.printStackTrace();
+    topScore = 0;
+  }
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
 }
 
 void towerButtons() {
-  for (int i = 0; i < 5; i++) {
-    PVector position = new PVector(0, i * gridSize);
-    Button button = new Button(position, gridSize * 2, gridSize, "button");
+  for (int i = 0; i < 8; i++) {
+    PVector position = new PVector(0, i * gridSize + 3 * gridSize);
+    
+    Button button = new Button(position, gridSize * 3, gridSize, "Tower" + i, "Tower");
+    buttons.add(button);
+  }
+}
+
+
+void settingsButton() {
+  String[] types = {"Top Score", "Mute", "Pause"};
+  
+  for (int i = 0; i < 3; i++) {
+    PVector position = new PVector(gridSize * i, height - gridSize);
+    
+    Button button = new Button(position, gridSize, gridSize, types[i], types[i]);
     buttons.add(button);
   }
 }
 
 void draw() {
+<<<<<<< HEAD
   background(0);
   stroke(30);
   strokeWeight(2);
@@ -74,11 +122,137 @@ void draw() {
   }
   if (frameCount % enemySpeed == 0){
     updateEnemy();
+=======
+  if (!gameOver){
+    background(0);
+    stroke(30);
+    strokeWeight(2);
+    noFill();
+    
+    for (int y = 0; y < rows; y++) {
+      for (int x = 0; x < cols; x++) {
+        rect(uiWidth + x * gridSize, y * gridSize, gridSize, gridSize);
+      }
+    }
+    
+    level.draw();
+  
+    currentButton = null;
+    for (Button button : buttons) {
+      button.draw();
+      if (button.mouseOver()) {
+        currentButton = button;
+      }
+    }
+  
+    for (Tower tower : towers) {
+      tower.display();
+      tower.shoot(enemies);  
+    }
+  
+    if (preview != null && mouseX >= uiWidth) {
+      PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
+      
+      preview.setLocation(location);
+      
+      if (onPath(location) || onTower(location)) {
+        preview.invalid();
+      } else {
+        preview.valid();
+      }
+      
+      preview.display();
+    }
+    
+    for (Enemy enemy : enemies) {
+      drawEnemy(enemy);
+    }
+  
+    if (paused == false) {
+      if (frameCount % spawnRate == 0 && frameCount >= 100) {
+        addEnemy();
+      }
+      if (frameCount % 1 == 0) {
+        updateEnemy();
+      }
+    }
+  
+    if (topScoreShow) {
+      fill(255, 255, 255, 200);
+      stroke(0);
+      rect(width / 4, height / 4, width / 2, height / 2);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Top Score: " + topScore, width / 2, height / 2);
+    }
+    if (baseHealth <= 0){
+    gameOver = true;
+  }
+  } else {
+    fill(255, 255, 255, 200);
+    stroke(0);
+    rect(width / 4, height / 4, width / 2, height / 2);
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text("GAMEOVER", width / 2, height / 2);
+  }
+}
+
+boolean onPath(PVector location) {
+  for (PVector tile : path) {    
+    if (location.x >= tile.x - gridSize / 2 && location.x <= tile.x - gridSize / 2 && location.y >= tile.y - gridSize / 2 && location.y <= tile.y - gridSize / 2) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+boolean onTower(PVector location) {
+  for (Tower tower : towers) {    
+    if (location.x >= tower.getLocation().x && location.x < tower.getLocation().x + gridSize && location.y >= tower.getLocation().y && location.y < tower.getLocation().y + gridSize) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+void mouseClicked() {
+  if (placingTower && currentButton == null && mouseX >= uiWidth) {
+    PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
+    
+    if (!onTower(location) && !onPath(location)) {
+      towers.add(new Tower(100, 100, 100, 100, location));
+      preview = null;
+      placingTower = false;
+    }  
+  } else if (currentButton != null) {
+    String f = currentButton.function;
+    
+    if (f.equals("Tower")) {
+      preview = new Tower(10, 10, 10, 10, new PVector(0, 0));
+      placingTower = true;
+    } 
+    else if (f.equals("Top Score")) {
+      topScoreShow = !topScoreShow;
+    } 
+    else if (f.equals("Mute")) {
+      muted = !muted;
+    } 
+    else if (f.equals("Pause")) {
+      paused = !paused;
+    }
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   }
 }
 
 void addEnemy(){
+<<<<<<< HEAD
   Enemy newEnemy = new Enemy(100, 0.9, levelTypes[levelType], enemyStart);
+=======
+  Enemy newEnemy = new Enemy(100, 0.9, enemySpeed, levelTypes[levelType], enemyStart);
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   enemies.add(newEnemy);
 }
 
@@ -87,44 +261,35 @@ void updateEnemy(){
     PVector currPath = path[i];
     for (int k = 0; k < enemies.size(); k++){
       Enemy currEnemy = enemies.get(k);
+      
+      if (currEnemy.getHealth() <= 0) {
+        enemies.remove(currEnemy);
+      }
+      
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
       if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
-        PVector myDir = Game.getNextDir(i, path);
+        PVector myDir = currEnemy.getNextDir(i, path);
         currEnemy.setDir(myDir);
       }
       if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
         currEnemy.setPosition(currPos.add(currEnemy.getDir()));
+        if (i == path.length - 1){
+          enemies.remove(currEnemy);
+          baseHealth--;
+        }
+      }
+      if(Math.abs(currPos.x - path[path.length - 1].x) <= level.getGridSize() / 2 && Math.abs(currPos.y - path[path.length - 1].y) <= level.getGridSize() / 2){
+        enemies.remove(currEnemy);
+        baseHealth--;
       }
     }
   }
 }
 
 void drawEnemy(Enemy myEnemy){
-  PVector position = new PVector(myEnemy.getX(), myEnemy.getY());
+  PVector position = new PVector(myEnemy.getX() - 5, myEnemy.getY() - 5);
   fill(myEnemy.myColor, 0, 0);
   stroke(myEnemy.myColor, 0, 0);
-  rect(position.x, position.y, 10, 20);
+  rect(position.x, position.y, 10, 10);
 }
   
-public static PVector getNextDir(int i, PVector[] paths){
-  PVector curr = paths[i];
-  PVector next = paths[i + 1];
-  PVector out = new PVector(0,0);
-  PVector N = new PVector(0, -1);
-  PVector E = new PVector(1, 0);
-  PVector S = new PVector(0, 1);
-  PVector W = new PVector(-1,0);
-  if (next.x > curr.x){
-    out = E;
-  }
-  if (next.x < curr.x){
-    out = W;
-  }
-  if (next.y > curr.y){
-    out = S;
-  }
-  if (next.y < curr.y){
-    out = N;
-  }
-  return out;
-}

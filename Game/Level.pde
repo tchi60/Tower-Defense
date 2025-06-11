@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 class Level {
   private int pathBlocks;
   private int gridSize = 50;
+=======
+
+class Level {
+  private int pathBlocks;
+  private int gridSize = 50;
+  private int uiCols = 3;
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
   private String type;
   private int w, h;
   private PVector[] path;
@@ -14,7 +22,7 @@ class Level {
     path = new PVector[pathBlocks];
   }
   
-  public int getGridSize(){
+  int getGridSize() {
     return gridSize;
   }
 
@@ -24,7 +32,7 @@ class Level {
     while (success == false) {
       pathIndex = 0;
       int startY = int(random(3, h - 3));
-      PVector start = new PVector(0, startY);
+      PVector start = new PVector(uiCols, startY);
       path[pathIndex] = start;
       pathIndex++;
       success = create(start, 1);
@@ -66,7 +74,7 @@ class Level {
       int newX = int(current.x) + dirs[order[i]][0];
       int newY = int(current.y) + dirs[order[i]][1];
 
-      if (newX < 0 || newY < 0 || newX >= w || newY >= h)
+      if (newX < uiCols || newY < 0 || newX >= w || newY >= h)
         continue;
       if (visited(newX, newY))
         continue;
@@ -128,8 +136,13 @@ class Level {
     
     return centers;
   }
+<<<<<<< HEAD
   
     PVector[] getPathTowers() {
+=======
+
+  PVector[] getPathTowers() {
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
     PVector[] centers = new PVector[pathBlocks];
     
     for (int i = 0; i < pathBlocks; i++) {
@@ -138,6 +151,10 @@ class Level {
     
     return centers;
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 632d5e38d83fc22bc6308a6562a62f28e552b8cd
 
   void draw() {
     noStroke();
