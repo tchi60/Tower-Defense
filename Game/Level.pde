@@ -2,14 +2,14 @@ class Level {
   private int pathBlocks;
   private int gridSize = 50;
   private int uiCols = 3;
-  private String type;
+  private color[] palette;
   private int w, h;
   private PVector[] path;
   private int pathIndex;
 
-  Level(int pb, String t) {
+  Level(int pb, color[] p) {
     pathBlocks = pb;
-    type = t;
+    palette = p;
     w = width / gridSize;
     h = height / gridSize;
     path = new PVector[pathBlocks];
@@ -135,12 +135,12 @@ class Level {
     noStroke();
     
     for (int i = 0; i < pathBlocks; i++) {
-      fill((80 + 175 / pathBlocks * i) - 30);
+      fill(0);
       rect(path[i].x * gridSize - 2, path[i].y * gridSize - 2, gridSize + 4, gridSize + 4);
     }
     
     for (int i = 0; i < pathIndex; i++) {
-      fill(80 + 175 / pathBlocks * i);
+      fill(palette[0], 255 - i * 3);
       rect(path[i].x * gridSize, path[i].y * gridSize, gridSize, gridSize);
     }
   }

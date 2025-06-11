@@ -6,9 +6,7 @@ ArrayList<Bullet> bullets;
 Tower preview;
 int numPaths;
 int baseHealth;
-String[] levelTypes = {"fire", "air", "water", "earth", "metal", "noir"};
 float enemySpeed;
-int levelType;
 PVector enemyStart;
 Level level;
 PVector[] path;
@@ -18,7 +16,22 @@ Button recentButton;
 boolean placingTower = false;
 boolean gameOver = false;
 
+String[] levelTypes = {"fire", "air", "water", "earth", "metal", "noir"};
+int levelType;
+
+color[][] levelPalettes = {
+  { color(255, 90, 50), color(235, 220, 210), color(255, 240, 230) },
+  { color(160, 230, 220), color(210, 235, 230), color(230, 255, 250) },
+  { color(50, 150, 220), color(210, 230, 235), color(230, 250, 255) },
+  { color(130, 100, 10), color(230, 220, 200), color(250, 240, 220) },
+  { color(180, 190, 190), color(220, 220, 220), color(240, 240, 240) },
+  { color(40, 60, 80), color(180, 190, 200), color(200, 210, 220) }
+};
+
+color pathColor, gridColor, backgroundColor;
+
 BufferedReader reader;
+PrintWriter file;
 
 int gridSize = 50;
 int cols;
@@ -34,6 +47,7 @@ boolean paused = false;
 boolean started = false;
 
 int money = 500;
+int kills = 0;
 
 void setup() {
   size(950, 600);
@@ -42,7 +56,10 @@ void setup() {
   rows = height / gridSize;
   numPaths = 50;
   levelType = (int)(Math.random() * levelTypes.length);
-  level = new Level(numPaths, levelTypes[levelType]);
+  pathColor = levelPalettes[levelType][0];
+  gridColor = levelPalettes[levelType][1];
+  backgroundColor = levelPalettes[levelType][2];
+  level = new Level(numPaths, levelPalettes[levelType]);
   baseHealth = 100;
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
@@ -58,7 +75,7 @@ void setup() {
   startPage();
   
   reader = createReader("topScore.txt");
-  try {
+  try {   
     topScore = Integer.parseInt(reader.readLine());
   } catch (IOException e) {
     e.printStackTrace();
@@ -97,9 +114,9 @@ void startPage() {
 
 void draw() {
   if (!gameOver) {
-    background(0);
+    background(backgroundColor);
     
-    stroke(30);
+    stroke(gridColor);
     strokeWeight(2);
     noFill();
     
@@ -111,9 +128,15 @@ void draw() {
     
     level.draw();
     
-    fill(#C1F8FF);
-    text(towers.size(), 20, 40);
-    text(money, 20, 60);
+    fill(255, 255, 255, 200);
+    stroke(0);
+    rect(0, 0, gridSize * 3, gridSize * 5);
+    fill(0);
+    textAlign(LEFT, CENTER);
+    textSize(20);
+    text("Towers: " + towers.size(), 10, 30);
+    text("Money: " + money, 10, 60);
+    text("Kills: " + kills, 10, 90);
     
     if (!started) {
       fill(255);
@@ -300,7 +323,7 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(300, 1, levelTypes[levelType], enemyStart);
+  Enemy newEnemy = new Enemy(1, 1, levelTypes[levelType], enemyStart);
   enemies.add(newEnemy);
 }
 
@@ -313,6 +336,16 @@ void updateEnemy(){
       if (currEnemy.getHealth() <= 0) {
         enemies.remove(currEnemy);
         money += 25;
+        kills++;
+        
+        if (kills > topScore) {
+          topScore = kills;
+         
+          file = createWriter("topScore.txt");
+          file.print(topScore);
+          file.flush();
+          file.close();
+        }
       }
       
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
