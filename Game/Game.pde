@@ -1,4 +1,5 @@
 import processing.sound.*;
+
 int numLevel; 
 float spawnRate;
 ArrayList<Enemy> enemies;
@@ -241,7 +242,9 @@ void draw() {
         b.updateBullet();
         
         if (b.hit()) {
-          enemyHit.play();
+          if (!muted) {
+            enemyHit.play();
+          }
           bullets.remove(b);
           break;
         }
@@ -421,7 +424,7 @@ void updateEnemy(Enemy currEnemy){
   for (int i = 0; i < path.length - 1; i++){
     if (currEnemy.getHealth() <= 0) {
       enemies.remove(currEnemy);
-      money += 25;
+      money += 5;
       kills++;
       
       if (kills > topScore) {
@@ -445,7 +448,10 @@ void updateEnemy(Enemy currEnemy){
     if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
       currEnemy.setPosition(currPos.add(currEnemy.getDir()));
       if (i == path.length - 1){
-        damage.play();
+        if (!muted) {
+          
+          damage.play();
+        }
         enemies.remove(currEnemy);
         baseHealth--;
       }
