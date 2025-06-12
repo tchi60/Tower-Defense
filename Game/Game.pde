@@ -37,6 +37,7 @@ int gridSize = 50;
 int cols;
 int rows;
 
+
 int uiCols = 3;
 int uiWidth = gridSize * uiCols;
 
@@ -44,10 +45,12 @@ int topScore = 0;
 boolean topScoreShow = false;
 boolean muted = false;
 boolean paused = false;
+
 boolean started = false;
 
 int money = 500;
 int kills = 0;
+boolean increased = false;
 
 void setup() {
   size(950, 600);
@@ -63,14 +66,18 @@ void setup() {
   towers = new ArrayList<Tower>();
   enemies = new ArrayList<Enemy>();
   buttons = new ArrayList<Button>();
+
+  spawnRate = 100;
+
   bullets = new ArrayList<Bullet>();
-  spawnRate = 50;
-  enemySpeed = 5;
+
+  enemySpeed = 1;
   level.setup();
   towerButtons();
   settingsButton();
   path = level.getPath();
   enemyStart = path[0];
+
   startPage();
   
   reader = createReader("topScore.txt");
@@ -208,6 +215,21 @@ void draw() {
     }
     
     if (!paused) {
+      if (kills % 10 == 0 && kills != 0){
+        if (!increased){
+          if (spawnRate > 20){
+            spawnRate -= 10;
+            increased = true;
+          }
+          if (enemySpeed < 2){
+            enemySpeed += 0.1;
+          }
+        }
+      }
+      if (kills % 10 == 1 && kills != 1){
+        increased = false;
+      }
+      
       for (Bullet b : bullets) {
         b.updateBullet();
         
@@ -217,15 +239,17 @@ void draw() {
         }
       }
     }
+    
   
     if (paused == false) {
-      if (frameCount % spawnRate == 0) {
+      
+      if (frameCount % spawnRate == 0 && frameCount >= 100) {
         addEnemy();
       }
       for (int i = enemies.size() - 1; i >= 0; i--) {
         Enemy enemy = enemies.get(i);
         
-        if (frameCount % enemy.getSpeed() == 0) {
+        if (frameCount % 1 == 0) {
           updateEnemy(enemy);
         }
       }
@@ -239,6 +263,9 @@ void draw() {
       textAlign(CENTER, CENTER);
       text("Top Score: " + topScore, width / 2, height / 2);
     }
+    if (baseHealth <= 0){
+    gameOver = true;
+  }
   } else {
     fill(255, 255, 255, 200);
     stroke(0);
@@ -344,39 +371,39 @@ void addEnemy(){
   
   switch (random) {
     case 1:
-      float[] stats1 = {1, 5};
+      float[] stats1 = {1, 1.25};
       
-      Enemy e1 = new Enemy(kills / 25 + stats1[0], stats1[1], levelTypes[levelType], enemyStart);
+      Enemy e1 = new Enemy((kills / 25 + stats1[0]) * enemySpeed, stats1[1], levelTypes[levelType], enemyStart);
       enemies.add(e1);
       break;
     case 2:
-      float[] stats2 = {3, 4};
+      float[] stats2 = {3, 1};
       
-      Enemy e2 = new Enemy(kills / 25 + stats2[0], stats2[1], levelTypes[levelType], enemyStart);
+      Enemy e2 = new Enemy((kills / 25 + stats2[0]) * enemySpeed, stats2[1], levelTypes[levelType], enemyStart);
       enemies.add(e2);
       break;
     case 3:
-      float[] stats3 = {10, 2};
+      float[] stats3 = {10, 0.5};
       
-      Enemy e3 = new Enemy(kills / 25 + stats3[0], stats3[1], levelTypes[levelType], enemyStart);
+      Enemy e3 = new Enemy((kills / 25 + stats3[0]) * enemySpeed, stats3[1], levelTypes[levelType], enemyStart);
       enemies.add(e3);
       break;
     case 4:
-      float[] stats4 = {20, 1};
+      float[] stats4 = {20, 0.25};
       
-      Enemy e4 = new Enemy(kills / 25 + stats4[0], stats4[1], levelTypes[levelType], enemyStart);
+      Enemy e4 = new Enemy((kills / 25 + stats4[0]) * enemySpeed, stats4[1], levelTypes[levelType], enemyStart);
       enemies.add(e4);
       break;
     case 5:
-      float[] stats5 = {0.5, 8};
+      float[] stats5 = {0.5, 3};
       
-      Enemy e5 = new Enemy(kills / 25 + stats5[0], stats5[1], levelTypes[levelType], enemyStart);
+      Enemy e5 = new Enemy((kills / 25 + stats5[0]) * enemySpeed, stats5[1], levelTypes[levelType], enemyStart);
       enemies.add(e5);
       break;
     case 6:
-      float[] stats6 = {0.25, 10};
+      float[] stats6 = {0.25, 2.5};
       
-      Enemy e6 = new Enemy(kills / 25 + stats6[0], stats6[1], levelTypes[levelType], enemyStart);
+      Enemy e6 = new Enemy((kills / 25 + stats6[0]) * enemySpeed, stats6[1], levelTypes[levelType], enemyStart);
       enemies.add(e6);
       break;
   }
@@ -403,7 +430,7 @@ void updateEnemy(Enemy currEnemy){
     
     PVector currPath = path[i];   
     PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
-    if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
+    if (Math.abs(currPos.x - currPath.x) <= 5 && Math.abs(currPos.y - currPath.y) <= 5){
       PVector myDir = this.getNextDir(i, path);
       currEnemy.setDir(myDir);
     }
@@ -450,3 +477,4 @@ public PVector getNextDir(int i, PVector[] paths){
   }
   return out;
 }
+  

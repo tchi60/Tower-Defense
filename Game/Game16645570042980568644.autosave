@@ -1,0 +1,11 @@
+private int numLevel;
+private float spawnRate;
+private ArrayList<Enemy> enemies;
+private ArrayList<tower> towers;
+private int numPaths;
+private int baseHealth;
+private Level level;
+
+
+
+    
