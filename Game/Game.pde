@@ -111,10 +111,11 @@ void setup() {
 }
 
 void towerButtons() {
+  String[] costs = {"100", "175", "125", "250", "75", "175", "150", "350"};
   for (int i = 0; i < 8; i++) {
     PVector position = new PVector(0, i * gridSize + 3 * gridSize);
     
-    Button button = new Button(position, gridSize * 3, gridSize, "Tower " + i, "Tower");
+    Button button = new Button(position, gridSize * 3, gridSize, "Tower " + i + " ($" + costs[i] + ")", "Tower");
     buttons.add(button);
   }
 }
@@ -347,31 +348,31 @@ boolean onTower(PVector location) {
 }
 
 Tower findTowerStats(PVector place){
-  if (recentButton.getText().equals("Tower 1")){
+  if (recentButton.getText().equals("Tower 1 ($100)")){
     return new Tower(5,4,175,225,place, "n", towerPalettes[1]);
   }
   
-  if (recentButton.getText().equals("Tower 2")){
+  if (recentButton.getText().equals("Tower 2 ($175)")){
     return new Tower(0.25,.25,125,175,place, "n", towerPalettes[2]);
   }
   
-  if (recentButton.getText().equals("Tower 3")){
+  if (recentButton.getText().equals("Tower 3 ($125)")){
     return new Tower(.2,0.1,250,175,place, "n", towerPalettes[3]);
   }
   
-  if (recentButton.getText().equals("Tower 4")){
+  if (recentButton.getText().equals("Tower 4 ($75)")){
     return new Tower(1,2.5,75,75,place, "aoe", towerPalettes[4]);
   }
   
-  if (recentButton.getText().equals("Tower 5")){
+  if (recentButton.getText().equals("Tower 5 ($175)")){
     return new Tower(3,2,175,125,place, "aoe", towerPalettes[5]);
   }
   
-  if (recentButton.getText().equals("Tower 6")){
+  if (recentButton.getText().equals("Tower 6 ($150)")){
     return new Tower(1,.5,150,175,place, "freeze", towerPalettes[6]);
   }
   
-  if (recentButton.getText().equals("Tower 7")){
+  if (recentButton.getText().equals("Tower 7 ($350)")){
     return new Tower(100,10,350,75,place, "n", towerPalettes[7]);
   }
   
