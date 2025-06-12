@@ -133,10 +133,11 @@ void draw() {
       rect(0, 0, gridSize * 3, gridSize * 5);
       fill(0);
       textAlign(LEFT, CENTER);
-      textSize(20);
-      text("Towers: " + towers.size(), 10, 30);
-      text("Enemies: " + enemies.size(), 10, 60);
-      text("Money: " + money, 10, 90);
+      textSize(15);
+      text("Towers: " + towers.size(), 10, 20);
+      text("Enemies: " + enemies.size(), 10, 45);
+      text("Health: " + baseHealth, 10, 70);
+      text("Money: " + money, 10, 95);
       text("Kills: " + kills, 10, 120);
     }
     
