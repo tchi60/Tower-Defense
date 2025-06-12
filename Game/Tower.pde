@@ -5,12 +5,13 @@ private String type;
 private PVector location;
 private color colour;
 
-Tower(float damage, float rate, float cost, float range, PVector location){
+Tower(float damage, float rate, float cost, float range, PVector location, String t){
 this.damage = damage;
 this.rate = rate;
 this.cost = cost;
 this.range = range;
 this.location = location;
+type = t;
 colour = color(150, 150, 200);
 }
 
@@ -57,7 +58,43 @@ void shoot(ArrayList<Enemy> list){
       Bullet b = new Bullet(this, enemy);
       bullets.add(b);
       
+      if (type.equals("freeze")) {
+        freeze(enemy);
+      } else if (type.equals("aoe")) {
+        aoe(enemy);
+      }
+      
       break;
+    }
+  }
+}
+
+void freeze(Enemy e) {
+  e.setSpeed(0);
+}
+
+void aoe(Enemy e) {
+  float radius = 75;
+  
+  fill(255, 100, 100);
+  noStroke();
+  circle(e.getX(), e.getY(), 75);
+  fill(255, 180, 100);
+  noStroke();
+  circle(e.getX(), e.getY(), 50);
+  fill(255, 255, 100);
+  noStroke();
+  circle(e.getX(), e.getY(), 25);
+  
+  for (Enemy other : enemies) {
+    if (!other.isAlive) continue;
+    
+    float dx = e.getX() - other.getX();
+    float dy = e.getY() - other.getY();
+    float d = dx * dx + dy * dy;
+
+    if (d <= radius * radius) {
+      other.damage(this);
     }
   }
 }
