@@ -56,8 +56,8 @@ public class Bullet{
   }
   
   public void drawBullet(){
-    fill(125, 249, 255);
-    stroke(125, 249, 255);
+    fill(255);
+    stroke(0);
     rect(location.x - 2, location.y - 2, 4, 4);
   }
 }

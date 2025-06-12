@@ -30,6 +30,17 @@ color[][] levelPalettes = {
   { color(40, 60, 80), color(180, 190, 200), color(200, 210, 220) }
 };
 
+int[][] towerPalettes = {
+  { 255, 0, 0 }, 
+  { 255, 180, 0 }, 
+  { 255, 255, 0 }, 
+  { 0, 255, 0 }, 
+  { 0, 255, 255 }, 
+  { 0, 0, 255 }, 
+  { 255, 0, 255 }, 
+  { 255, 255, 255 }, 
+};
+
 color pathColor, gridColor, backgroundColor;
 
 BufferedReader reader;
@@ -101,7 +112,7 @@ void towerButtons() {
   for (int i = 0; i < 8; i++) {
     PVector position = new PVector(0, i * gridSize + 3 * gridSize);
     
-    Button button = new Button(position, gridSize * 3, gridSize, "Tower" + i, "Tower");
+    Button button = new Button(position, gridSize * 3, gridSize, "Tower " + i, "Tower");
     buttons.add(button);
   }
 }
@@ -308,35 +319,35 @@ boolean onTower(PVector location) {
 }
 
 Tower findTowerStats(PVector place){
-  if (recentButton.getText().equals("Tower1")){
-    return new Tower(5,4,175,225,place, "n");
+  if (recentButton.getText().equals("Tower 1")){
+    return new Tower(5,4,175,225,place, "n", towerPalettes[1]);
   }
   
-  if (recentButton.getText().equals("Tower2")){
-    return new Tower(0.25,.25,125,175,place, "n");
+  if (recentButton.getText().equals("Tower 2")){
+    return new Tower(0.25,.25,125,175,place, "n", towerPalettes[2]);
   }
   
-  if (recentButton.getText().equals("Tower3")){
-    return new Tower(.2,0.1,250,175,place, "n");
+  if (recentButton.getText().equals("Tower 3")){
+    return new Tower(.2,0.1,250,175,place, "n", towerPalettes[3]);
   }
   
-  if (recentButton.getText().equals("Tower4")){
-    return new Tower(1,2.5,75,75,place, "aoe");
+  if (recentButton.getText().equals("Tower 4")){
+    return new Tower(1,2.5,75,75,place, "aoe", towerPalettes[4]);
   }
   
-  if (recentButton.getText().equals("Tower5")){
-    return new Tower(3,2,175,125,place, "aoe");
+  if (recentButton.getText().equals("Tower 5")){
+    return new Tower(3,2,175,125,place, "aoe", towerPalettes[5]);
   }
   
-  if (recentButton.getText().equals("Tower6")){
-    return new Tower(1,.5,150,175,place, "freeze");
+  if (recentButton.getText().equals("Tower 6")){
+    return new Tower(1,.5,150,175,place, "freeze", towerPalettes[6]);
   }
   
-  if (recentButton.getText().equals("Tower7")){
-    return new Tower(100,10,350,75,place, "n");
+  if (recentButton.getText().equals("Tower 7")){
+    return new Tower(100,10,350,75,place, "n", towerPalettes[7]);
   }
   
-  return new Tower(1,1,100,125,place, "n");
+  return new Tower(1,1,100,125,place, "n", towerPalettes[0]);
 }
 
 void mouseClicked() {

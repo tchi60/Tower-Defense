@@ -6,14 +6,14 @@ private String type;
 private PVector location;
 private color colour;
 
-Tower(float damage, float rate, float cost, float range, PVector location, String t){
+Tower(float damage, float rate, float cost, float range, PVector location, String t, int[] c){
 this.damage = damage;
 this.rate = rate;
 this.cost = cost;
 this.range = range;
 this.location = location;
 type = t;
-colour = color(150, 150, 200);
+colour = color(c[0], c[1], c[2]);
 }
 
 
