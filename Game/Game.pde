@@ -242,7 +242,7 @@ void draw() {
         b.updateBullet();
         
         if (b.hit()) {
-          if (!muted) {
+          if (!muted){
             enemyHit.play();
           }
           bullets.remove(b);
@@ -448,8 +448,7 @@ void updateEnemy(Enemy currEnemy){
     if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
       currEnemy.setPosition(currPos.add(currEnemy.getDir()));
       if (i == path.length - 1){
-        if (!muted) {
-          
+        if (!muted){
           damage.play();
         }
         enemies.remove(currEnemy);
@@ -458,7 +457,9 @@ void updateEnemy(Enemy currEnemy){
     }
     if(Math.abs(currPos.x - path[path.length - 1].x) <= level.getGridSize() / 2 && Math.abs(currPos.y - path[path.length - 1].y) <= level.getGridSize() / 2){
       enemies.remove(currEnemy);
-      damage.play();
+      if (!muted){
+        damage.play();
+      }
       baseHealth--;
     }
   }
