@@ -25,6 +25,10 @@ float getRate(){
 return rate;
 }
 
+void setDamage(float d) {
+  damage = d;
+}
+
 float getCost(){
 return cost;
 }

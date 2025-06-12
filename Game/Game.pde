@@ -51,6 +51,7 @@ int cols;
 int rows;
 
 Tower selectedTower = null;
+Button upgradeButton;
 
 int uiCols = 3;
 int uiWidth = gridSize * uiCols;
@@ -201,8 +202,8 @@ void draw() {
     if (selectedTower != null) {
       PVector loc = selectedTower.getLocation();
       float boxX = loc.x;
-      float boxY = loc.y - 60;
-      float boxW = 120;
+      float boxY = loc.y - 90;
+      float boxW = 150;
       float boxH = 50;
     
       fill(255, 255, 200);
@@ -215,6 +216,13 @@ void draw() {
       text("Damage: " + selectedTower.getDamage(), boxX + 5, boxY + 5);
       text("Rate: " + selectedTower.getRate(), boxX + 5, boxY + 20);
       text("Range: " + selectedTower.getRange(), boxX + 5, boxY + 35);
+      
+      float buttonH = 30;
+      
+      PVector buttonPos = new PVector(boxX, boxY + boxH + 5);
+      upgradeButton = new Button(buttonPos, (int)boxW, (int)buttonH, "+25% Damage ($50)", "upgrade");
+      upgradeButton.draw();
+      
     }
   
     if (preview != null && mouseX >= uiWidth) {
@@ -371,6 +379,12 @@ Tower findTowerStats(PVector place){
 }
 
 void mouseClicked() {
+  if (upgradeButton != null && upgradeButton.mouseOver() && selectedTower != null && money >= 50) {
+    selectedTower.setDamage(selectedTower.getDamage() * 1.25);
+    money -= 50;
+    return;
+  }
+  
   if (placingTower && currentButton == null && mouseX >= uiWidth) {
     PVector location = new PVector(mouseX / gridSize * gridSize, mouseY / gridSize * gridSize);
     
