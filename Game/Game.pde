@@ -236,12 +236,12 @@ void draw() {
     if (!paused) {
       if (kills % 10 == 0 && kills != 0){
         if (!increased){
-          if (spawnRate > 20){
+          if (spawnRate > 40){
             spawnRate -= 10;
             increased = true;
           }
           if (enemySpeed < 2){
-            enemySpeed += 0.1;
+            enemySpeed += 0.25;
           }
         }
       }
@@ -395,37 +395,37 @@ void addEnemy(){
     case 1:
       float[] stats1 = {1, 1.25};
       
-      Enemy e1 = new Enemy((kills / 25 + stats1[0]) * enemySpeed, stats1[1], levelTypes[levelType], enemyStart);
+      Enemy e1 = new Enemy(kills / 25 + stats1[0], stats1[1] * enemySpeed, levelTypes[levelType], enemyStart);
       enemies.add(e1);
       break;
     case 2:
       float[] stats2 = {3, 1};
       
-      Enemy e2 = new Enemy((kills / 25 + stats2[0]) * enemySpeed, stats2[1], levelTypes[levelType], enemyStart);
+      Enemy e2 = new Enemy(kills / 25 + stats2[0], stats2[1] * enemySpeed, levelTypes[levelType], enemyStart);
       enemies.add(e2);
       break;
     case 3:
       float[] stats3 = {10, 0.5};
       
-      Enemy e3 = new Enemy((kills / 25 + stats3[0]) * enemySpeed, stats3[1], levelTypes[levelType], enemyStart);
+      Enemy e3 = new Enemy(kills / 25 + stats3[0], stats3[1] * enemySpeed, levelTypes[levelType], enemyStart);
       enemies.add(e3);
       break;
     case 4:
       float[] stats4 = {20, 0.25};
       
-      Enemy e4 = new Enemy((kills / 25 + stats4[0]) * enemySpeed, stats4[1], levelTypes[levelType], enemyStart);
+      Enemy e4 = new Enemy(kills / 25 + stats4[0], stats4[1] * enemySpeed, levelTypes[levelType], enemyStart);
       enemies.add(e4);
       break;
     case 5:
       float[] stats5 = {0.5, 3};
       
-      Enemy e5 = new Enemy((kills / 25 + stats5[0]) * enemySpeed, stats5[1], levelTypes[levelType], enemyStart);
+      Enemy e5 = new Enemy(kills / 25 + stats5[0], stats5[1] * enemySpeed, levelTypes[levelType], enemyStart);
       enemies.add(e5);
       break;
     case 6:
       float[] stats6 = {0.25, 2.5};
       
-      Enemy e6 = new Enemy((kills / 25 + stats6[0]) * enemySpeed, stats6[1], levelTypes[levelType], enemyStart);
+      Enemy e6 = new Enemy(kills / 25 + stats6[0], stats6[1] * enemySpeed, levelTypes[levelType], enemyStart);
       enemies.add(e6);
       break;
   }
