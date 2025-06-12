@@ -50,6 +50,7 @@ boolean started = false;
 
 int money = 500;
 int kills = 0;
+boolean increased = false;
 
 void setup() {
   size(950, 600);
@@ -200,6 +201,21 @@ void draw() {
     }
     
     if (!paused) {
+      if (kills % 10 == 0 && kills != 0){
+        if (!increased){
+          if (spawnRate > 20){
+            spawnRate -= 10;
+            increased = true;
+          }
+          if (enemySpeed < 3){
+            enemySpeed += 0.1;
+          }
+        }
+      }
+      if (kills % 10 == 1 && kills != 1){
+        increased = false;
+      }
+      
       for (Bullet b : bullets) {
         b.updateBullet();
         
@@ -209,8 +225,10 @@ void draw() {
         }
       }
     }
+    
   
     if (paused == false) {
+      
       if (frameCount % spawnRate == 0 && frameCount >= 100) {
         addEnemy();
       }
@@ -331,7 +349,9 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(5, 1, enemySpeed, levelTypes[levelType], enemyStart);
+  int randColor = (int)(Math.random() * 255);
+  float randHealth = (randColor / 255.0) * 5;
+  Enemy newEnemy = new Enemy(randHealth, 1, enemySpeed, levelTypes[levelType], enemyStart, randColor);
   enemies.add(newEnemy);
 }
 
@@ -357,7 +377,7 @@ void updateEnemy(){
       }
       
       PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
-      if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
+      if (Math.abs(currPos.x - currPath.x) <= 5 && Math.abs(currPos.y - currPath.y) <= 5){
         PVector myDir = currEnemy.getNextDir(i, path);
         currEnemy.setDir(myDir);
       }

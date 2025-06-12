@@ -8,7 +8,7 @@ public class Enemy{
   private PVector dir;
   private float enemySpeed;
   
-  public Enemy(float myHealth, float myDefense, float mySpeed, String myType, PVector myPosition){
+  public Enemy(float myHealth, float myDefense, float mySpeed, String myType, PVector myPosition, int myMyColor){
     health = myHealth;
     defense = myDefense;
     type = myType;
@@ -17,6 +17,7 @@ public class Enemy{
     myColor = (int)(Math.random() * 255);
     dir = new PVector(0,0);
     enemySpeed = mySpeed;
+    myColor = myMyColor;
   }
   public float getHealth(){
     return health;
