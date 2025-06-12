@@ -135,8 +135,9 @@ void draw() {
       textAlign(LEFT, CENTER);
       textSize(20);
       text("Towers: " + towers.size(), 10, 30);
-      text("Money: " + money, 10, 60);
-      text("Kills: " + kills, 10, 90);
+      text("Enemies: " + enemies.size(), 10, 60);
+      text("Money: " + money, 10, 90);
+      text("Kills: " + kills, 10, 120);
     }
     
     if (!started) {
@@ -191,6 +192,18 @@ void draw() {
     
     for (Enemy enemy : enemies) {
       drawEnemy(enemy);
+      
+      if (enemy.getFrozen() > 0) {
+        enemy.setFrozen(enemy.getFrozen() - 1);
+        
+        if (enemy.getFrozen() <= 0) {
+          enemy.setSpeed((int)enemy.getOriSpeed());
+        }
+      }
+      
+      if (enemy.getSpeed() == 0 && enemy.getFrozen() == 0) {
+        enemy.setFrozen(75);
+      }
     }
     
     if (!paused) {
@@ -208,8 +221,12 @@ void draw() {
       if (frameCount % spawnRate == 0) {
         addEnemy();
       }
-      if (frameCount % enemySpeed == 0) {
-        updateEnemy();
+      for (int i = enemies.size() - 1; i >= 0; i--) {
+        Enemy enemy = enemies.get(i);
+        
+        if (frameCount % enemy.getSpeed() == 0) {
+          updateEnemy(enemy);
+        }
       }
     }
   
@@ -253,34 +270,34 @@ boolean onTower(PVector location) {
 
 Tower findTowerStats(PVector place){
   if (recentButton.getText().equals("Tower1")){
-    return new Tower(5,4,175,225,place);
+    return new Tower(5,4,175,225,place, "n");
   }
   
   if (recentButton.getText().equals("Tower2")){
-    return new Tower(0.25,.25,125,175,place);
+    return new Tower(0.25,.25,125,175,place, "n");
   }
   
   if (recentButton.getText().equals("Tower3")){
-    return new Tower(.2,0.1,250,175,place);
+    return new Tower(.2,0.1,250,175,place, "n");
   }
   
   if (recentButton.getText().equals("Tower4")){
-    return new Tower(1,2.5,75,75,place);
+    return new Tower(1,2.5,75,75,place, "aoe");
   }
   
   if (recentButton.getText().equals("Tower5")){
-    return new Tower(3,2,175,125,place);
+    return new Tower(3,2,175,125,place, "aoe");
   }
   
   if (recentButton.getText().equals("Tower6")){
-    return new Tower(1,.5,150,175,place);
+    return new Tower(1,.5,150,175,place, "freeze");
   }
   
   if (recentButton.getText().equals("Tower7")){
-    return new Tower(100,10,350,75,place);
+    return new Tower(100,10,350,75,place, "n");
   }
   
-  return new Tower(1,1,100,125,place);
+  return new Tower(1,1,100,125,place, "n");
 }
 
 void mouseClicked() {
@@ -322,47 +339,83 @@ void mouseClicked() {
 }
 
 void addEnemy(){
-  Enemy newEnemy = new Enemy(kills / 25 + 1, 1, levelTypes[levelType], enemyStart);
-  enemies.add(newEnemy);
+  int random = (int)random(1, 7);
+  
+  switch (random) {
+    case 1:
+      float[] stats1 = {1, 5};
+      
+      Enemy e1 = new Enemy(kills / 25 + stats1[0], stats1[1], levelTypes[levelType], enemyStart);
+      enemies.add(e1);
+      break;
+    case 2:
+      float[] stats2 = {3, 4};
+      
+      Enemy e2 = new Enemy(kills / 25 + stats2[0], stats2[1], levelTypes[levelType], enemyStart);
+      enemies.add(e2);
+      break;
+    case 3:
+      float[] stats3 = {10, 2};
+      
+      Enemy e3 = new Enemy(kills / 25 + stats3[0], stats3[1], levelTypes[levelType], enemyStart);
+      enemies.add(e3);
+      break;
+    case 4:
+      float[] stats4 = {20, 1};
+      
+      Enemy e4 = new Enemy(kills / 25 + stats4[0], stats4[1], levelTypes[levelType], enemyStart);
+      enemies.add(e4);
+      break;
+    case 5:
+      float[] stats5 = {0.5, 8};
+      
+      Enemy e5 = new Enemy(kills / 25 + stats5[0], stats5[1], levelTypes[levelType], enemyStart);
+      enemies.add(e5);
+      break;
+    case 6:
+      float[] stats6 = {0.25, 10};
+      
+      Enemy e6 = new Enemy(kills / 25 + stats6[0], stats6[1], levelTypes[levelType], enemyStart);
+      enemies.add(e6);
+      break;
+  }
 }
 
-void updateEnemy(){
+void updateEnemy(Enemy currEnemy){
   for (int i = 0; i < path.length - 1; i++){
-    PVector currPath = path[i];
-    for (int k = 0; k < enemies.size(); k++){
-      Enemy currEnemy = enemies.get(k);
+    if (currEnemy.getHealth() <= 0) {
+      enemies.remove(currEnemy);
+      money += 25;
+      kills++;
       
-      if (currEnemy.getHealth() <= 0) {
-        enemies.remove(currEnemy);
-        money += 25;
-        kills++;
-        
-        if (kills > topScore) {
-          topScore = kills;
-         
-          file = createWriter("topScore.txt");
-          file.print(topScore);
-          file.flush();
-          file.close();
-        }
+      if (kills > topScore) {
+        topScore = kills;
+       
+        file = createWriter("topScore.txt");
+        file.print(topScore);
+        file.flush();
+        file.close();
       }
       
-      PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
-      if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
-        PVector myDir = this.getNextDir(i, path);
-        currEnemy.setDir(myDir);
-      }
-      if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
-        currEnemy.setPosition(currPos.add(currEnemy.getDir()));
-        if (i == path.length - 1){
-          enemies.remove(currEnemy);
-          baseHealth--;
-        }
-      }
-      if(Math.abs(currPos.x - path[path.length - 1].x) <= level.getGridSize() / 2 && Math.abs(currPos.y - path[path.length - 1].y) <= level.getGridSize() / 2){
+      return;
+    }
+    
+    PVector currPath = path[i];   
+    PVector currPos = new PVector(currEnemy.getX(), currEnemy.getY());
+    if (Math.abs(currPos.x - currPath.x) <= 0 && Math.abs(currPos.y - currPath.y) <= 0){
+      PVector myDir = this.getNextDir(i, path);
+      currEnemy.setDir(myDir);
+    }
+    if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
+      currEnemy.setPosition(currPos.add(currEnemy.getDir()));
+      if (i == path.length - 1){
         enemies.remove(currEnemy);
         baseHealth--;
       }
+    }
+    if(Math.abs(currPos.x - path[path.length - 1].x) <= level.getGridSize() / 2 && Math.abs(currPos.y - path[path.length - 1].y) <= level.getGridSize() / 2){
+      enemies.remove(currEnemy);
+      baseHealth--;
     }
   }
 }
