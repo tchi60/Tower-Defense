@@ -50,6 +50,7 @@ int gridSize = 50;
 int cols;
 int rows;
 
+Tower selectedTower = null;
 
 int uiCols = 3;
 int uiWidth = gridSize * uiCols;
@@ -195,6 +196,25 @@ void draw() {
       if (!paused) {
         tower.shoot(enemies);  
       }
+    }
+    
+    if (selectedTower != null) {
+      PVector loc = selectedTower.getLocation();
+      float boxX = loc.x;
+      float boxY = loc.y - 60;
+      float boxW = 120;
+      float boxH = 50;
+    
+      fill(255, 255, 200);
+      stroke(0);
+      rect(boxX, boxY, boxW, boxH);
+    
+      fill(0);
+      textSize(12);
+      textAlign(LEFT, TOP);
+      text("Damage: " + selectedTower.getDamage(), boxX + 5, boxY + 5);
+      text("Rate: " + selectedTower.getRate(), boxX + 5, boxY + 20);
+      text("Range: " + selectedTower.getRange(), boxX + 5, boxY + 35);
     }
   
     if (preview != null && mouseX >= uiWidth) {
@@ -385,7 +405,19 @@ void mouseClicked() {
       paused = false;
       started = true;
     }
+  } else {
+  for (Tower tower : towers) {
+    PVector l = tower.getLocation();
+    
+    if (mouseX >= l.x && mouseX < l.x + gridSize && mouseY >= l.y && mouseY < l.y + gridSize) {
+      selectedTower = tower;
+      return;
+    }
   }
+
+  selectedTower = null;
+}
+
 }
 
 void addEnemy(){
