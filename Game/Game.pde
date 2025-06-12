@@ -1,3 +1,4 @@
+import processing.sound.*;
 int numLevel; 
 float spawnRate;
 ArrayList<Enemy> enemies;
@@ -52,6 +53,9 @@ int money = 500;
 int kills = 0;
 boolean increased = false;
 
+SoundFile enemyHit;
+SoundFile damage;
+
 void setup() {
   size(950, 600);
   cols = (width - uiWidth) / gridSize;
@@ -79,6 +83,9 @@ void setup() {
   enemyStart = path[0];
 
   startPage();
+  
+  enemyHit = new SoundFile(this, "EnemyHit.wav");
+  damage = new SoundFile(this, "Damage.wav");
   
   reader = createReader("topScore.txt");
   try {   
@@ -234,6 +241,7 @@ void draw() {
         b.updateBullet();
         
         if (b.hit()) {
+          enemyHit.play();
           bullets.remove(b);
           break;
         }
@@ -437,12 +445,14 @@ void updateEnemy(Enemy currEnemy){
     if(Math.abs(currPos.x - currPath.x) <= level.getGridSize() / 2 && Math.abs(currPos.y - currPath.y) <= level.getGridSize() / 2){
       currEnemy.setPosition(currPos.add(currEnemy.getDir()));
       if (i == path.length - 1){
+        damage.play();
         enemies.remove(currEnemy);
         baseHealth--;
       }
     }
     if(Math.abs(currPos.x - path[path.length - 1].x) <= level.getGridSize() / 2 && Math.abs(currPos.y - path[path.length - 1].y) <= level.getGridSize() / 2){
       enemies.remove(currEnemy);
+      damage.play();
       baseHealth--;
     }
   }
